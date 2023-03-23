@@ -1,0 +1,52 @@
+{{- range $job_name, $job_options := .Values.cronjobs }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: loadtest-{{ $job_name }}
+  namespace: loadtest
+spec:
+  schedule: {{ $job_options.schedule }}
+  suspend: true
+  jobTemplate:
+    spec:
+      completions: {{ $job_options.jobsParallelism }}
+      parallelism: {{ $job_options.jobsParallelism }}
+      template:
+        spec:
+          containers:
+          - name: {{ $job_name }}
+            image: docker.io/library/k6-exporter:latest
+            imagePullPolicy: IfNotPresent
+            command:
+              - "k6"
+              - "run"
+              - "-u"
+              - "0"
+              - "-s"
+              - "{{ $job_options.scalingDuration }}:{{ $job_options.loadVUs }}"
+              - "-s"
+              - "{{ $job_options.peakDuration }}:{{ $job_options.loadVUs }}"
+              - "-s"
+              - "{{ $job_options.scalingDuration }}:0"
+              - "/scripts/{{ $job_options.scriptPath }}"
+              - "--out"
+              - "prometheus=port={{ $job_options.port }}&namespace=k6_"
+            volumeMounts:
+            - name: config
+              mountPath: /scripts
+            - name: secret-volume
+              mountPath: /secrets
+              readOnly: true
+            ports:
+            - containerPort: {{ $job_options.port }}
+              name: loadtest-pod
+          volumes:
+          - name: config
+            configMap:
+              name: configmap-testscript
+          - name: secret-volume
+            secret:
+              secretName: login-secret
+          restartPolicy: OnFailure
+---
+{{- end}}

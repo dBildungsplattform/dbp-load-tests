@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: loadtest-service
+  namespace: loadtest
+  labels:
+    app: loadtest-moodle
+spec:
+  selector:
+    app: loadtest-moodle
+  ports:
+  - name: loadtest-service
+    port: 25000
+    targetPort: loadtest-pod

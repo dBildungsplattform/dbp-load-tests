@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loadtest-moodle
+  namespace: loadtest
+spec:
+  endpoints:
+  - interval: 15s
+    port: loadtest-service
+    path: "/v1/metrics"
+  namespaceSelector:
+    matchNames:
+    - loadtest
+  selector:
+    matchLabels:
+      name: loadtest-moodle

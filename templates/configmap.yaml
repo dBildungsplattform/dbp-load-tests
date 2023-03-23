@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-testscript
+  namespace: loadtest
+data:
+  smallTest.js: |-
+{{ .Files.Get "js/smallTest.js" | indent 4}}
+  loadTestMoodle.js: |-
+{{ .Files.Get "js/loadTestMoodle.js" | indent 4}}

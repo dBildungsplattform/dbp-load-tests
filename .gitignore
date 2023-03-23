@@ -13,3 +13,7 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+login.json
+templates/login-secret.yaml
+startScript.sh
