@@ -15,3 +15,5 @@ cronjobs:
     scriptPath: /smallTest.js
     schedule: 0 8 * * *
     port: 5656
+  scenario3:
+    loadVUs: 0
