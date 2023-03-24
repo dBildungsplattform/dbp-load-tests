@@ -3,7 +3,7 @@ FROM golang:1.20-alpine as builder
 WORKDIR $GOPATH/src/go.k6.io/k6
 COPY . .
 RUN apk --no-cache add git=~2
-RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@:0.9  \
+RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@0.9  \
     && CGO_ENABLED=0 xk6 build \
     --with github.com/szkiba/xk6-prometheus@v0.1 \
     --output /tmp/k6

@@ -22,3 +22,13 @@ Those parameters will be used in 'templates/cronjob.yaml'
 ## Test Requirements:
 For the tests to work as expected, the test scripts need to be mounted to the pods who run the test.
 Furthermore a secret needs to be mounted, which contains login informations in JSON format to be read by k6 tests scripts.
+
+## Versions:
+
+### xk6@0.9
+
+### xk6-prometheus@v0.1
+
+### grafana/k6:0.43
+
+### golang:1.20-alpine
