@@ -7,13 +7,13 @@ cronjobs:
     scriptPath: /loadTestMoodle.js
     schedule: 0 8 * * *
     port: 5656
+    serviceName: scenario1
   scenario2:
-    loadVUs: 12
+    loadVUs: 5
     scalingDuration: 5s
-    peakDuration: 15s
+    peakDuration: 900s
     jobsParallelism: 1
     scriptPath: /smallTest.js
     schedule: 0 8 * * *
     port: 5656
-  scenario3:
-    loadVUs: 0
+    serviceName: scenario2

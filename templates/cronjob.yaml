@@ -12,10 +12,13 @@ spec:
       completions: {{ $job_options.jobsParallelism }}
       parallelism: {{ $job_options.jobsParallelism }}
       template:
+        metadata:
+          labels:
+            test: loadtest-{{ $job_options.serviceName }}
         spec:
           containers:
           - name: {{ $job_name }}
-            image: docker.io/library/k6-exporter:latest
+            image: ghcr.io/dbildungsplattform/load-test-k6:latest
             imagePullPolicy: IfNotPresent
             command:
               - "k6"
@@ -30,7 +33,7 @@ spec:
               - "{{ $job_options.scalingDuration }}:0"
               - "/scripts/{{ $job_options.scriptPath }}"
               - "--out"
-              - "prometheus=port={{ $job_options.port }}&namespace=k6_"
+              - "prometheus=port={{ $job_options.port }}&namespace=k6"
             volumeMounts:
             - name: config
               mountPath: /scripts

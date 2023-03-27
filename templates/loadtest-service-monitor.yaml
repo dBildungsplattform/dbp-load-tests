@@ -3,14 +3,15 @@ kind: ServiceMonitor
 metadata:
   name: loadtest-moodle
   namespace: loadtest
+  labels:
+    serviceMonitorSelector: loadtest
 spec:
   endpoints:
   - interval: 15s
-    port: loadtest-service
-    path: "/v1/metrics"
+    port: loadtest-pod
   namespaceSelector:
     matchNames:
     - loadtest
   selector:
     matchLabels:
-      name: loadtest-moodle
+      service: loadtest

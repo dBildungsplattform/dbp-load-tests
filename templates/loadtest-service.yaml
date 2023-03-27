@@ -1,14 +1,17 @@
-kind: Service
+{{- range $job_name, $job_options := .Values.cronjobs }}
 apiVersion: v1
+kind: Service
 metadata:
-  name: loadtest-service
+  name: loadtest-service-{{ $job_options.serviceName }}
   namespace: loadtest
   labels:
-    app: loadtest-moodle
+    service: loadtest
 spec:
   selector:
-    app: loadtest-moodle
+    test: loadtest-{{ $job_options.serviceName }}
   ports:
-  - name: loadtest-service
-    port: 25000
+  - name: loadtest-pod
+    port: {{ $job_options.port }}
     targetPort: loadtest-pod
+---
+{{- end}}
