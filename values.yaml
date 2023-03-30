@@ -2,7 +2,7 @@ cronjobs:
   scenario1:
     loadVUs: 50
     scalingDuration: 30s
-    peakDuration: 30s
+    peakDuration: 250s
     jobsParallelism: 2
     scriptPath: /loadTestMoodle.js
     schedule: 0 8 * * *
@@ -11,7 +11,7 @@ cronjobs:
   scenario2:
     loadVUs: 5
     scalingDuration: 5s
-    peakDuration: 900s
+    peakDuration: 250s
     jobsParallelism: 1
     scriptPath: /smallTest.js
     schedule: 0 8 * * *

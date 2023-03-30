@@ -9,6 +9,7 @@ metadata:
 spec:
   selector:
     test: loadtest-{{ $job_options.serviceName }}
+  clusterIP: None
   ports:
   - name: loadtest-pod
     port: {{ $job_options.port }}

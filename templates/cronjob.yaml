@@ -15,6 +15,7 @@ spec:
         metadata:
           labels:
             test: loadtest-{{ $job_options.serviceName }}
+            pod: {{ $job_name }}
         spec:
           containers:
           - name: {{ $job_name }}
