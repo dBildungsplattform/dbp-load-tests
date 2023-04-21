@@ -1,5 +1,3 @@
-//Frage beantworten(?)
-//Inhalt hochladen(?) und löschen (Wird unsere DB genutzt oder thirdparty?)
 import http from "k6/http";
 import { check, group, sleep } from "k6";
 import { Counter } from "k6/metrics";
@@ -7,7 +5,7 @@ import { SharedArray } from 'k6/data';
 
 //Access secret JSON data array from File
 const data = new SharedArray('users', function() {
-    const f = JSON.parse(open('./userLogin.json'));
+    const f = JSON.parse(open('../secrets/login.json'));
     return f;
 });
 
@@ -20,10 +18,16 @@ let unsuccessfulAnnouncePage = new Counter("unsuccessful_announcement_displayed"
 let successfulLogouts = new Counter("successful_logouts");
 let unsuccessfulLogouts = new Counter("unsuccessful_logouts");
 
+let commentID = 1; 
+
 export default function () {
 
     let token;
     let sessKey;
+    let cookie;
+
+    //get cookie
+    let jar = http.cookieJar();
 
     // +++++++++ Front page +++++++++\\
     group("Front page", function () {
@@ -40,10 +44,7 @@ export default function () {
 
         let res = http.get(urlLogin);
         
-        //get cookie
-        let jar = http.cookieJar();
-        let cookies = jar.cookiesForURL(res.url);    
-        //sessionKey=cookies;
+        cookie = jar.cookiesForURL(res.url);    
 
         check(res, {
         "User isn't logged in": (r) =>
@@ -120,7 +121,7 @@ export default function () {
         check (courseRes, {'Course status was 200': (r) => r.status == 200});
 
         let checkCoursePage = check(courseRes, {
-            "successfull entered course": (r) =>
+            "successful entered course": (r) =>
               r.body.indexOf("Loadtest-Course") !== -1,
         });
 
@@ -143,10 +144,11 @@ export default function () {
         //make forum announcement request
         let announceRes = http.get(urlAnnouncement, payload);
 
+        cookie = jar.cookiesForURL(announceRes.url);
         check (announceRes, {'Announcement status was 200': (r) => r.status == 200});
 
         let checkAnnouncePage = check(announceRes, {
-            "successfull entered announcement page": (r) =>
+            "successful entered announcement page": (r) =>
               r.body.indexOf("This is a loadtest announcement") !== -1,
         });
 
@@ -158,6 +160,44 @@ export default function () {
         }
 
     });
+
+    // +++++++++ Write comment +++++++++\\
+    group("Write comment", function() {
+        let currentID = commentID;
+        commentID+=1;
+
+        let urlQuery = "sesskey="+sessKey+"&info=mod_forum_add_discussion_post";
+        const urlComment = "https://moodle.dev-scaling-test.dbildungsplattform.de/lib/ajax/service.php?"+urlQuery;
+        console.log(urlComment);
+        let payload = [{
+            "index":0,
+            "methodname":"mod_forum_add_discussion_post",
+            "args":{
+                "postid": "1",
+                "message":"test message "+ sessKey,
+                "messageformat":0,
+                "subject":"Re: Loadtest announcement "+ sessKey,
+                "options":[
+                    {"name":"private","value":false},
+                    {"name":"topreferredformat","value":true}
+                ]
+            }
+        }];
+
+        let commentRes = http.post(urlComment, JSON.stringify(payload), {
+            cookies: {
+                MoodleSession: cookie.MoodleSession[0],
+                MOODLEID1_: cookie.MOODLEID1_[0],
+            },
+        });
+
+        check (commentRes, {'Comment status was 200': (r) => r.status == 200});
+    });
+
+    //Sleep
+    sleep((Math.random()*10)+5);
+
+    //Delete comment TODO
 
 
     // +++++++++ Logout process +++++++++\\
@@ -172,14 +212,14 @@ export default function () {
         //make logout reguest
         let logoutRes = http.get(urlLogout, payload);
 
-        check (logoutRes, {'Announcement status was 200': (r) => r.status == 200});
+        check (logoutRes, {'Logout status was 200': (r) => r.status == 200});
 
         //verify logout success by accessing announcements
         let announceRes = http.get(urlAnnouncement, payload);
 
         let checkSuccessfullLogout = check(announceRes, {
             "Logout successfull": (r) =>
-            r.body.indexOf("This is a loadtest announcement") == -1,
+            r.body.indexOf("This is a loadtest announcement") == -1,//Should not have access to this page if logged out
         });
 
         //Count successful announcement requests
@@ -188,7 +228,6 @@ export default function () {
         }else{
             unsuccessfulLogouts.add(1);
         }
-    //Verify logout by trying to acces a resticted area page
     });
 
 }

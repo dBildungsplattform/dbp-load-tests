@@ -19,7 +19,7 @@ spec:
         spec:
           containers:
           - name: {{ $job_name }}
-            image: ghcr.io/dbildungsplattform/load-test-k6:latest
+            image: {{ $job_options.image }}
             imagePullPolicy: IfNotPresent
             command:
               - "k6"

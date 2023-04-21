@@ -4,7 +4,9 @@ metadata:
   name: configmap-testscript
   namespace: loadtest
 data:
-  smallTest.js: |-
-{{ .Files.Get "js/smallTest.js" | indent 4}}
   loadTestMoodle.js: |-
 {{ .Files.Get "js/loadTestMoodle.js" | indent 4}}
+  loadtestUser.js: |-
+{{ .Files.Get "js/loadtestUser.js" | indent 4}}
+  browserLoadtest.js: |-
+{{ .Files.Get "js/browserLoadtest.js" | indent 4}}

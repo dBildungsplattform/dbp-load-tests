@@ -8,12 +8,24 @@ cronjobs:
     schedule: 0 8 * * *
     port: 5656
     serviceName: scenario1
-  scenario2:
+    image: ghcr.io/dbildungsplattform/load-test-k6:latest
+  loadtestUser:
     loadVUs: 5
     scalingDuration: 5s
     peakDuration: 250s
     jobsParallelism: 1
-    scriptPath: /smallTest.js
+    scriptPath: /loadtestUser.js
     schedule: 0 8 * * *
     port: 5656
-    serviceName: scenario2
+    serviceName: loadtestUser
+    image: ghcr.io/dbildungsplattform/load-test-k6:latest
+  browserScenario:
+    loadVUs: 2
+    scalingDuration: 5s
+    peakSuration: 10s
+    jobsParallelism: 1
+    scriptPath: /browserLoadtest.js
+    schedule: 0 8 * * *
+    port: 5656
+    serviceName: browserScenario
+    image: k6-browser:1.0 #Image not in public repo

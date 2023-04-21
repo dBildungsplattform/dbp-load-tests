@@ -10,6 +10,7 @@ RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@v0.9.0  \
 
 # Create image for running k6 with output for Prometheus
 FROM grafana/k6:0.43.1
+USER root
 
 COPY --from=builder /tmp/k6 /usr/bin/k6
 WORKDIR /home/k6
