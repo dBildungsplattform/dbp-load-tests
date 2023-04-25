@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: configmap-testscript
+  name: configmap-Moodle-Loadtest
   namespace: loadtest
 data:
   loadTestMoodle.js: |-
-{{ .Files.Get "js/loadTestMoodle.js" | indent 4}}
+{{ .Files.Get "js/loadtestManager.js" | indent 4}}
   loadtestUser.js: |-
 {{ .Files.Get "js/loadtestUser.js" | indent 4}}
   browserLoadtest.js: |-

@@ -34,7 +34,7 @@ spec:
               - "{{ $job_options.scalingDuration }}:0"
               - "/scripts/{{ $job_options.scriptPath }}"
               - "--out"
-              - "prometheus=port={{ $job_options.port }}&namespace=k6"
+              - "prometheus=port={{ $job_options.port }}&namespace={{ $job_options.serviceName }}"
             volumeMounts:
             - name: config
               mountPath: /scripts
@@ -47,7 +47,7 @@ spec:
           volumes:
           - name: config
             configMap:
-              name: configmap-testscript
+              name: configmap-Moodle-Loadtest
           - name: secret-volume
             secret:
               secretName: login-secret

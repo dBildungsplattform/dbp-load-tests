@@ -5,7 +5,7 @@ import { SharedArray } from 'k6/data';
 
 //Access secret JSON data array from File
 const data = new SharedArray('users', function() {
-    const f = JSON.parse(open('../secrets/login.json'));
+    const f = JSON.parse(open('../login.json'));//TODO Adjust to use secret in cluster
     return f;
 });
 
@@ -18,15 +18,14 @@ let unsuccessfulAnnouncePage = new Counter("unsuccessful_announcement_displayed"
 let successfulLogouts = new Counter("successful_logouts");
 let unsuccessfulLogouts = new Counter("unsuccessful_logouts");
 
-let commentID = 1; 
+let commentDistinctionID = 1;
 
 export default function () {
 
     let token;
     let sessKey;
     let cookie;
-
-    //get cookie
+    let commID; 
     let jar = http.cookieJar();
 
     // +++++++++ Front page +++++++++\\
@@ -163,20 +162,19 @@ export default function () {
 
     // +++++++++ Write comment +++++++++\\
     group("Write comment", function() {
-        let currentID = commentID;
-        commentID+=1;
+        let currentTextID = commentDistinctionID;
+        commentDistinctionID+=1;
 
         let urlQuery = "sesskey="+sessKey+"&info=mod_forum_add_discussion_post";
         const urlComment = "https://moodle.dev-scaling-test.dbildungsplattform.de/lib/ajax/service.php?"+urlQuery;
-        console.log(urlComment);
         let payload = [{
             "index":0,
             "methodname":"mod_forum_add_discussion_post",
             "args":{
                 "postid": "1",
-                "message":"test message "+ sessKey,
+                "message":"test message "+ currentTextID,
                 "messageformat":0,
-                "subject":"Re: Loadtest announcement "+ sessKey,
+                "subject":"Re: Loadtest announcement "+ currentTextID,
                 "options":[
                     {"name":"private","value":false},
                     {"name":"topreferredformat","value":true}
@@ -189,15 +187,36 @@ export default function () {
                 MoodleSession: cookie.MoodleSession[0],
                 MOODLEID1_: cookie.MOODLEID1_[0],
             },
-        });
+        });        
+        sleep(1);
+        //Get the ID of created announcement comment for deletion purpose
+        commID = JSON.parse(commentRes.body)[0].data.postid;
 
         check (commentRes, {'Comment status was 200': (r) => r.status == 200});
     });
 
-    //Sleep
+    // +++++++++ Sleep +++++++++\\
     sleep((Math.random()*10)+5);
 
-    //Delete comment TODO
+    // +++++++++ Delete comment +++++++++\\
+    group("Delete comment", function() {
+
+        const formdata = {
+            "delete": commID,
+            "confirm": commID,
+            "sesskey": sessKey,
+        };
+
+        const commentDelRes = http.post('https://moodle.dev-scaling-test.dbildungsplattform.de/mod/forum/post.php', formdata, {
+            cookies: {
+                MoodleSession: cookie.MoodleSession[0],
+                MOODLEID1_: cookie.MOODLEID1_[0],
+            },
+        });
+
+        check (commentDelRes, {'Comment Delete status was 200': (r) => r.status == 200});
+
+    });
 
 
     // +++++++++ Logout process +++++++++\\

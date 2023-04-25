@@ -1,13 +1,13 @@
 cronjobs:
   scenario1:
-    loadVUs: 50
+    loadVUs: 5
     scalingDuration: 30s
     peakDuration: 250s
     jobsParallelism: 2
-    scriptPath: /loadTestMoodle.js
+    scriptPath: /loadtestManager.js
     schedule: 0 8 * * *
     port: 5656
-    serviceName: scenario1
+    serviceName: managerScenario
     image: ghcr.io/dbildungsplattform/load-test-k6:latest
   loadtestUser:
     loadVUs: 5
@@ -17,9 +17,9 @@ cronjobs:
     scriptPath: /loadtestUser.js
     schedule: 0 8 * * *
     port: 5656
-    serviceName: loadtestUser
+    serviceName: userScenario
     image: ghcr.io/dbildungsplattform/load-test-k6:latest
-  browserScenario:
+  browserLoadtest:
     loadVUs: 2
     scalingDuration: 5s
     peakSuration: 10s
