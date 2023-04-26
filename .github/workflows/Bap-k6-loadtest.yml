@@ -1,0 +1,37 @@
+name: Build and push k6-loadtest Images
+
+on:
+  push:
+    tags:
+      - 'k6-loadtest-[0-9]+.[0-9]+.[0-9]+'
+      - 'k6-browser-loadtest-[0-9]+.[0-9]+.[0-9]+'
+jobs:
+  pre_build:
+    runs-on: ubuntu-latest
+    outputs:
+      tagName: ${{ steps.tagName.outputs.tag }}
+      versionName: ${{ steps.versionName.outputs.tag }}
+    steps:
+      - name: Filter Tag name
+        uses: olegtarasov/get-tag@v2.1
+        id: tagName
+        with:
+          tagRegex: "(.+?(?=-[0-9]))"
+          tagRegexGroup: 1
+
+      - name: Filter Version name
+        uses: olegtarasov/get-tag@v2.1
+        id: versionName
+        with:
+          tagRegex: "${{ steps.tagName.outputs.tag }}-(.*)"
+          tagRegexGroup: 1
+
+  build_and_push:
+    needs: pre_build
+    uses: hpi-schul-cloud/infra-tools/.github/workflows/build-and-push.yaml@master
+    with:
+      registry: ghcr.io
+      image: dbildungsplattform/${{ needs.pre_build.outputs.tagName }}
+      tag: ${{ needs.pre_build.outputs.versionName }}
+      context: ./${{ needs.pre_build.outputs.tagName }}/
+  
