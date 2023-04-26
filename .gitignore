@@ -15,7 +15,6 @@
 # vendor/
 k6-Browser.Dockerfile
 js/userLogin.json
-login.json
 js/managerLogin.json
 templates/login-secret.yaml
 templates/browserCronjob.yaml
