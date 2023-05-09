@@ -1,18 +1,23 @@
 import { chromium } from 'k6/experimental/browser';
 import { check } from 'k6'
+import { SharedArray } from 'k6/data';
+
+const data = new SharedArray('users', function() {
+    const f = JSON.parse(open('../secrets/managerLogin.json'));
+    return f;
+}); 
 
 export default async function() {
-    const browser = chromium.launch({ headless: true});
+    const browser = chromium.launch({ headless: true, args: ["no-sandbox"]});
     const page = browser.newPage();
 
-    const managerUser = JSON.parse(open('../secrets/manager.json'));
+    let managerUser = data[Math.floor(Math.random() * data.length)];
 
+    //Login
+    await page.goto('https://moodle.dev-scaling-test.dbildungsplattform.de/login/index.php');
 
-        //Login
-        await page.goto('https://moodle.dev-scaling-test.dbildungsplattform.de/login/index.php', { waitUntil: 'networkidle'});
-
-        page.locator('input[id="username"]').type(managerUser.username);
-        page.locator('input[id="password"]').type(managerUser.password);
+    page.locator('input[id="username"]').type(managerUser.username);
+    page.locator('input[id="password"]').type(managerUser.password);
 
         await Promise.all([
             page.waitForNavigation(),
@@ -130,5 +135,4 @@ export default async function() {
 
         page.close();
         browser.close();
-
 }

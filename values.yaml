@@ -1,31 +1,31 @@
 cronjobs:
-  scenario1:
-    loadVUs: 5
-    scalingDuration: 30s
-    peakDuration: 250s
-    jobsParallelism: 2
-    scriptPath: /loadtestManager.js
+  manager-scenario:
+    loadVUs: 2
+    scalingDuration: 5s
+    peakDuration: 25s
+    jobsParallelism: 1
+    scriptPath: loadtestManager.js
     schedule: 0 8 * * *
     port: 5656
-    serviceName: managerScenario
-    image: ghcr.io/dbildungsplattform/load-test-k6:latest
-  loadtestUser:
+    serviceName: manager-scenario
+    image: ghcr.io/dbildungsplattform/k6-loadtest:latest
+  user-scenario:
     loadVUs: 5
     scalingDuration: 5s
-    peakDuration: 250s
+    peakDuration: 25s
     jobsParallelism: 1
-    scriptPath: /loadtestUser.js
+    scriptPath: loadtestUser.js
     schedule: 0 8 * * *
     port: 5656
-    serviceName: userScenario
-    image: ghcr.io/dbildungsplattform/load-test-k6:latest
-  browserLoadtest:
-    loadVUs: 2
+    serviceName: user-scenario
+    image: ghcr.io/dbildungsplattform/k6-loadtest:latest
+  browser-scenario:
+    loadVUs: 1
     scalingDuration: 5s
     peakSuration: 10s
     jobsParallelism: 1
-    scriptPath: /browserLoadtest.js
+    scriptPath: browserLoadtest.js
     schedule: 0 8 * * *
     port: 5656
-    serviceName: browserScenario
-    image: k6-browser:1.0 #Image not in public repo
+    serviceName: browser-scenario
+    image: ghcr.io/dbildungsplattform/k6-browser-loadtest:latest

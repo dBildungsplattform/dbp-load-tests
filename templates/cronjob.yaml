@@ -47,7 +47,7 @@ spec:
           volumes:
           - name: config
             configMap:
-              name: configmap-Moodle-Loadtest
+              name: configmap-moodle-loadtest
           - name: secret-volume
             secret:
               secretName: login-secret

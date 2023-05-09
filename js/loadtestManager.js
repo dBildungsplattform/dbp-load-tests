@@ -4,7 +4,7 @@ import { Counter } from "k6/metrics";
 import { SharedArray } from 'k6/data';
 
 const data = new SharedArray('users', function() {
-    const f = JSON.parse(open('./managerLogin.json'));//TODO Adjust to use secret in cluster
+    const f = JSON.parse(open('../secrets/managerlogin.json'));
     return f;
 });
 

@@ -5,7 +5,7 @@ import { SharedArray } from 'k6/data';
 
 //Access secret JSON data array from File
 const data = new SharedArray('users', function() {
-    const f = JSON.parse(open('../login.json'));//TODO Adjust to use secret in cluster
+    const f = JSON.parse(open('../secrets/userlogin.json'));
     return f;
 });
 

@@ -8,13 +8,15 @@ RUN CGO_ENABLED=0 go install go.k6.io/xk6/cmd/xk6@v0.9.0  \
     --with github.com/szkiba/xk6-prometheus@v0.1.5 \
     --output /tmp/k6
 
-#xk6 Prometheus copy to k6 browser module
+# Create image for running k6 with output for Prometheus
 FROM grafana/k6:0.43.1
 USER root
 
-COPY --from=builder /tmp/k6 /usr/bin/k6
-WORKDIR /home/k6
-
 RUN apk update && apk add --no-cache chromium
-
 ENV K6_BROWSER_ENABLED=true
+
+COPY --from=builder /tmp/k6 /k6-prometheus
+COPY wrapper-script.sh wrapper-script.sh
+#WORKDIR /home/k6
+
+CMD ./wrapper-script.sh
