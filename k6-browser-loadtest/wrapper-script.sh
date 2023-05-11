@@ -1,6 +1,6 @@
-#!/bin/bash
-  
-# Start the primary process and put it in the background
-./k6-prometheus &
+#!/bin/sh
+
+K6_PROMETHEUS_RW_SERVER_URL= servicecenter-vminsert.servicecenterlocal \
+./k6 "$@"
 
 wait -n

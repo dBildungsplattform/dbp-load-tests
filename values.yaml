@@ -21,8 +21,8 @@ cronjobs:
     image: ghcr.io/dbildungsplattform/k6-loadtest:latest
   browser-scenario:
     loadVUs: 1
-    scalingDuration: 5s
-    peakSuration: 10s
+    scalingDuration: 10s
+    peakDuration: 50s
     jobsParallelism: 1
     scriptPath: browserLoadtest.js
     schedule: 0 8 * * *

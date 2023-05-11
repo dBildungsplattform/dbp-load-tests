@@ -20,21 +20,23 @@ spec:
           containers:
           - name: {{ $job_name }}
             image: {{ $job_options.image }}
-            imagePullPolicy: IfNotPresent
-            command:
-              - "k6"
-              - "run"
-              - "-u"
-              - "0"
-              - "-s"
-              - "{{ $job_options.scalingDuration }}:{{ $job_options.loadVUs }}"
-              - "-s"
-              - "{{ $job_options.peakDuration }}:{{ $job_options.loadVUs }}"
-              - "-s"
-              - "{{ $job_options.scalingDuration }}:0"
-              - "/scripts/{{ $job_options.scriptPath }}"
-              - "--out"
-              - "prometheus=port={{ $job_options.port }}&namespace={{ $job_options.serviceName }}"
+            imagePullPolicy: Always
+            env:
+              - name: SECRET_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    name: vminsert-credentials
+                    key: username
+              - name: SECRET_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: vminsert-credentials
+                    key: password
+            args:
+              ['run', '-u', '0', '-s', '{{ $job_options.scalingDuration }}:{{ $job_options.loadVUs }}',
+                         '-s', '{{ $job_options.peakDuration }}:{{ $job_options.loadVUs }}',
+                         '-s', '{{ $job_options.scalingDuration }}:0', '/scripts/{{ $job_options.scriptPath }}',
+                         '--out', 'experimental-prometheus-rw', 'K6_PROMETHEUS_RW_USERNAME=$SECRET_USERNAME', 'K6_PROMETHEUS_RW_PASSWORD=$SECRET_PASSWORD']
             volumeMounts:
             - name: config
               mountPath: /scripts
