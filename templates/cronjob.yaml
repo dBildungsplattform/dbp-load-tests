@@ -36,9 +36,7 @@ spec:
               ['run', '-u', '0', '-s', '{{ $job_options.scalingDuration }}:{{ $job_options.loadVUs }}',
                          '-s', '{{ $job_options.peakDuration }}:{{ $job_options.loadVUs }}',
                          '-s', '{{ $job_options.scalingDuration }}:0', '/scripts/{{ $job_options.scriptPath }}',
-                         '--out', 'experimental-prometheus-rw',
-                         'K6_PROMETHEUS_RW_USERNAME=$SECRET_USERNAME', 'K6_PROMETHEUS_RW_PASSWORD=$SECRET_PASSWORD',
-                         'K6_PROMETHEUS_RW_SERVER_URL=servicecenter-vminsert.servicecenterlocal']
+                         '--out', 'experimental-prometheus-rw K6_PROMETHEUS_RW_USERNAME=$SECRET_USERNAME K6_PROMETHEUS_RW_PASSWORD=$SECRET_PASSWORD K6_PROMETHEUS_RW_SERVER_URL=servicecenter-vminsert.servicecenterlocal']
             volumeMounts:
             - name: config
               mountPath: /scripts
