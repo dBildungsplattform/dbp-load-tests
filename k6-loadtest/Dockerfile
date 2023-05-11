@@ -2,7 +2,7 @@
 FROM grafana/k6:0.43.1
 USER root
 
-COPY ../wrapper-script.sh wrapper-script.sh
+COPY wrapper-script.sh wrapper-script.sh
 RUN chmod +x wrapper-script.sh
 
 ENTRYPOINT ["./wrapper-script.sh"]
