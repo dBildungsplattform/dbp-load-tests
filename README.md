@@ -7,6 +7,8 @@ Suspended Cronjobs will be used as templates for the jobs who can be started wit
 The cronjobs itself will be created by using the defined test scenarios in the values of the helmchart at helm installation.
 The defined scenarios in the values consist of different parameters like the user amount, test duration and used test-script.
 
+The produced metrics will be exported with the k6 nativ prometheus remote write exporter.
+
 ## Content and structure:
 
 ### Folder 'js':
@@ -25,10 +27,6 @@ Furthermore a secret needs to be mounted, which contains login informations in J
 
 ## Versions:
 
-### xk6@0.9
-
-### xk6-prometheus@v0.1
-
-### grafana/k6:0.43
+### grafana/k6:0.43.1
 
 ### golang:1.20-alpine
