@@ -35,9 +35,9 @@ spec:
             args:
               ['run', '-u', '0', '-s', '{{ $job_options.scalingDuration }}:{{ $job_options.loadVUs }}',
                          '-s', '{{ $job_options.peakDuration }}:{{ $job_options.loadVUs }}',
-                         '-s', '{{ $job_options.scalingDuration }}:0', '/scripts/{{ $job_options.scriptPath }}',
-                         '--tag', 'NAME={{ $job_options.serviceName }}',
-                         '--out', 'experimental-prometheus-rw']
+                         '-s', '{{ $job_options.scalingDuration }}:0', '/scripts/{{ $job_options.scriptPath }}']
+                         #'--tag','NAME={{ $job_options.serviceName }}',
+                         #'--out', 'experimental-prometheus-rw']
             volumeMounts:
             - name: config
               mountPath: /scripts

@@ -189,6 +189,7 @@ export default function () {
             },
         });        
         sleep(1);
+        //TODO Does only work as intendet as long as all comment creations are successful
         //Get the ID of created announcement comment for deletion purpose
         commID = JSON.parse(commentRes.body)[0].data.postid;
 
