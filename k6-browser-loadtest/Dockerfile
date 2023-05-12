@@ -8,6 +8,5 @@ ENV K6_BROWSER_ENABLED=true
 
 COPY wrapper-script.sh wrapper-script.sh
 RUN chmod +x wrapper-script.sh
-#WORKDIR /home/k6
 
 ENTRYPOINT ["./wrapper-script.sh"]

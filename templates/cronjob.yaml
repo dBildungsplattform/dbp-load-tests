@@ -20,7 +20,7 @@ spec:
           containers:
           - name: {{ $job_name }}
             image: {{ $job_options.image }}
-            imagePullPolicy: Always
+            imagePullPolicy: IfNotPresent
             env:
               - name: SECRET_USERNAME
                 valueFrom:
