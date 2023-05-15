@@ -15,6 +15,4 @@
 # vendor/
 js/userLogin.json
 js/managerLogin.json
-templates/login-secret.yaml
-templates/browserCronjob.yaml
 startScript.sh
