@@ -1,0 +1,17 @@
+{
+    "discussionsubscribe": 1,
+    "course": "",
+    "forum": "",
+    "discussion": 0,
+    "parent": 0,
+    "groupid": 0,
+    "edit": 0,
+    "reply": 0,
+    "sesskey": "",
+    "_qf__mod_forum_post_form": 1,
+    "subject": "",
+    "message[text]": "<p dir='ltr' style='text-align: left;'>Test announcement message</p>",
+    "message[format]": 1,
+    "message[itemid]": 286232499,
+    "submitbutton": "Beitrag absenden"
+}

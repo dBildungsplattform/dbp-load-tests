@@ -1,8 +1,8 @@
 cronjobs:
   manager-scenario:
-    loadVUs: 2
+    loadVUs: 1
     scalingDuration: 5s
-    peakDuration: 25s
+    peakDuration: 55s
     jobsParallelism: 1
     scriptPath: loadtestManager.js
     schedule: 0 8 * * *
@@ -10,9 +10,9 @@ cronjobs:
     serviceName: manager-scenario
     image: ghcr.io/dbildungsplattform/k6-loadtest:latest
   user-scenario:
-    loadVUs: 5
-    scalingDuration: 5s
-    peakDuration: 15s
+    loadVUs: 50
+    scalingDuration: 15s
+    peakDuration: 50s
     jobsParallelism: 1
     scriptPath: loadtestUser.js
     schedule: 0 8 * * *

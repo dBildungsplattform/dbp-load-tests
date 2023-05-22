@@ -39,8 +39,10 @@ spec:
                          '--tag','NAME={{ $job_options.serviceName }}',
                          '--out', 'experimental-prometheus-rw']
             volumeMounts:
-            - name: config
+            - name: config-scripts
               mountPath: /scripts
+            - name: config-data
+              mountPath: /data
             - name: secret-volume
               mountPath: /secrets
               readOnly: true
@@ -48,9 +50,12 @@ spec:
             - containerPort: {{ $job_options.port }}
               name: loadtest-pod
           volumes:
-          - name: config
+          - name: config-scripts
             configMap:
               name: configmap-moodle-loadtest
+          - name: config-data
+            configMap:
+              name: configmap-moodle-data
           - name: secret-volume
             secret:
               secretName: login-secret
