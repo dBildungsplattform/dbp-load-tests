@@ -24,14 +24,14 @@ let successfulLogouts = new Counter("successful_logouts");
 let unsuccessfulLogouts = new Counter("unsuccessful_logouts");
 let commentsCreated = new Counter("Comments written");
 let commentsDeleted = new Counter("Comments deleted");
-
+let moodleEnvironment = __ENV.ENVIRONMENT;
 
 //Create loadtest setup environment
-export function setup() {
+export function setup() { 
 
     let jar = http.cookieJar();
 
-    const urlLogin = "https://moodle.test.dbildungscloud.org/login/index.php?lang=de";
+    const urlLogin = "https://"+ moodleEnvironment +"/login/index.php?lang=de";
 
     let res = http.get(urlLogin);
     let token = res.html().find('input[name=logintoken]').attr('value');
@@ -55,13 +55,14 @@ export function setup() {
     let cookie = jar.cookiesForURL(setupLoginRes.url); 
 
     //Set course creation payload
-    setupCourseData.sesskey = setupSessKey;
-    setupCourseData.fullname = "User course setup: " + setupSessKey;
-    setupCourseData.shortname = "User loadtest course";
+    let newSetupCourseData = setupCourseData;
+    newSetupCourseData.sesskey = setupSessKey;
+    newSetupCourseData.fullname = "User course setup: " + setupSessKey;
+    newSetupCourseData.shortname = "User loadtest course";
 
-    const urlCourse = "https://moodle.test.dbildungscloud.org/course/edit.php";
+    const urlCourse = "https://"+ moodleEnvironment +"/course/edit.php";
 
-    let setupCourseCreationRes = http.post(urlCourse, setupCourseData, {
+    let setupCourseCreationRes = http.post(urlCourse, newSetupCourseData, {
         cookies: {
             MoodleSession: cookie.MoodleSession[0],
             MOODLEID1_: cookie.MOODLEID1_[0],
@@ -75,39 +76,46 @@ export function setup() {
     check (setupCourseCreationRes, {'Course creation status was 200': (r) => r.status == 200});
 
     //Create announcement for users to comment
-    const urlAnnouncement = "https://moodle.test.dbildungscloud.org/mod/forum/post.php";
 
-    setupAnnouncementData.sesskey = setupSessKey;
-    setupAnnouncementData.course = userCourseID;
-    setupAnnouncementData.subject =  "Loadtest Announcement for " + setupSessKey;
+    //Create multiple announcements and spread users randomly over them to avoid congestion TODO
+    const urlAnnouncement = "https://"+ moodleEnvironment +"/mod/forum/post.php";
+
+    let newSetupAnnouncementData = setupAnnouncementData;
+    newSetupAnnouncementData.sesskey = setupSessKey;
+    newSetupAnnouncementData.course = userCourseID;
     let setupForumID = userCourseID-1;
-    setupAnnouncementData.forum = setupForumID;
+    newSetupAnnouncementData.forum = setupForumID;
 
-    let setupAnnounceCreationRes = http.post(urlAnnouncement, setupAnnouncementData, {
-        cookies: {
-            MoodleSession: cookie.MoodleSession[0],
-            MOODLEID1_: cookie.MOODLEID1_[0],
-        },
-    });
+    //Create multiple posts to avoid congestion
+    const discussionIDs = [];
 
-    //Get the created announcement ID
-    let discussID = setupAnnounceCreationRes.html().find("tr[class~=discussion]").attr('data-discussionid');
-    check (setupAnnounceCreationRes, {'Announcement creation status was 200': (r) => r.status == 200});
+    for(let i = 0; i<4 ; i++){
+        newSetupAnnouncementData.subject =  "Loadtest Announcement for " + setupSessKey + "-" + i;
 
-    let urlDiscussion = "https://moodle.test.dbildungscloud.org/mod/forum/discuss.php?d="+discussID;
-    payload = {logintoken: "${token}"};
+        let setupAnnounceCreationRes = http.post(urlAnnouncement, newSetupAnnouncementData, {
+            cookies: {
+                MoodleSession: cookie.MoodleSession[0],
+                MOODLEID1_: cookie.MOODLEID1_[0],
+            },
+        });
 
-    //make forum announcement request
-    let discussionRes = http.get(urlDiscussion, payload);
-
-    let parentPost = discussionRes.html().find("div[class~=firstpost]").attr('data-post-id');
+        //Get the created announcement ID
+        let discussID = setupAnnounceCreationRes.html().find("tr[class~=discussion]").attr('data-discussionid');
+        check (setupAnnounceCreationRes, {'Announcement creation status was 200': (r) => r.status == 200});
+        discussionIDs[i] = discussID;
+        sleep(0.5);//Sleep so there won't be race condition problems
+    }
+    console.log("DiscussionID Array: "+discussionIDs);
+    
 
     //Add users to course
-    let enrolPageUrl = "https://moodle.test.dbildungscloud.org/user/index.php?id="+userCourseID;
+    let enrolPageUrl = "https://"+ moodleEnvironment +"/user/index.php?id="+userCourseID;
+    payload = {logintoken: "${token}"};
+
     let getEnrolePageRes = http.get(enrolPageUrl, payload);
     let enrolID = getEnrolePageRes.html().find("input[name=enrolid]").attr('value');
 
-    let courseEnrolUrl = "https://moodle.test.dbildungscloud.org/enrol/manual/ajax.php?mform_showmore_main=0&id="+ userCourseID +"&action=enrol&enrolid="+enrolID+"&sesskey="+ setupSessKey +"&_qf__enrol_manual_enrol_users_form=1&mform_showmore_id_main=0&userlist%5B%5D=3&userlist%5B%5D=4&roletoassign=5&startdate=4&duration=";
+    let courseEnrolUrl = "https://"+ moodleEnvironment +"/enrol/manual/ajax.php?mform_showmore_main=0&id="+ userCourseID +"&action=enrol&enrolid="+enrolID+"&sesskey="+ setupSessKey +"&_qf__enrol_manual_enrol_users_form=1&mform_showmore_id_main=0&userlist%5B%5D=3&userlist%5B%5D=4&roletoassign=5&startdate=4&duration=";
 
     http.get(courseEnrolUrl, {
         cookies: {
@@ -118,8 +126,7 @@ export function setup() {
 
     let returnData = {
         courseID: userCourseID,
-        discussionID: discussID,
-        parentPostID: parentPost,
+        discussionID: discussionIDs
     }
 
     return { idObject: returnData };
@@ -132,11 +139,20 @@ export default function (data) {
     let sessKey;
     let cookie;
     let commID;
+    let parentPostID;
+    //Choose one of the discussions inside the forum to spread the users over them
+    let tempArray = data.idObject.discussionID
+    const discussionID = tempArray[Math.floor(Math.random()*tempArray.length)]
 
     // +++++++++ Front page +++++++++\\
     group("Front page", function () {
-        let res =  http.get('https://moodle.test.dbildungscloud.org/');
+        let res =  http.get('https://'+ moodleEnvironment +'/');
         check (res, {'status was 200': (r) => r.status == 200});
+
+        check(res, {
+            "Front page loading time less than 5s": (r) =>
+                r.timings.duration <= 5000,
+            });
     });
 
 
@@ -144,7 +160,7 @@ export default function (data) {
     group("Login process", function () {
 
         //Check if user is already logged in
-        const urlLogin = "https://moodle.test.dbildungscloud.org/login/index.php?lang=de";
+        const urlLogin = "https://"+ moodleEnvironment +"/login/index.php?lang=de";
 
         let res = http.get(urlLogin);
         
@@ -201,6 +217,11 @@ export default function (data) {
         if (checkLoginFailure) {
             unsuccessfulLogins.add(1);
         }
+
+        check(loginRes, {
+            "Login process time less than 5s": (r) =>
+                r.timings.duration <= 5000,
+        });
     
         //Check status code of response
         check (loginRes, {'Login status was 200': (r) => r.status == 200});
@@ -210,7 +231,7 @@ export default function (data) {
 
     // +++++++++ Course page +++++++++\\
     group("Course page", function () {
-        const urlCourse = "https://moodle.test.dbildungscloud.org/course/view.php?id="+data.idObject.courseID;
+        const urlCourse = "https://"+ moodleEnvironment +"/course/view.php?id="+data.idObject.courseID;
         let payload = {logintoken: "${token}"}
 
         sleep((Math.random()*5)+3);
@@ -231,17 +252,24 @@ export default function (data) {
         }else{
             failedCoursePage.add(1);
         }
+
+        check(courseRes, {
+            "Course loading time less than 5s": (r) =>
+                r.timings.duration <= 5000,
+        });
     });
 
 
     // +++++++++ Announcement page +++++++++\\
     group("Announcement page", function () {
-        const urlAnnouncement = "https://moodle.test.dbildungscloud.org/mod/forum/discuss.php?d="+data.idObject.discussionID;
+        const urlAnnouncement = "https://"+ moodleEnvironment +"/mod/forum/discuss.php?d="+discussionID;
         let payload = {logintoken: "${token}"};
         sleep((Math.random()*10)+3);
 
         //make forum announcement request
         let announceRes = http.get(urlAnnouncement, payload);
+
+        parentPostID = announceRes.html().find("div[class~=firstpost]").attr('data-post-id');
 
         check (announceRes, {'Announcement status was 200': (r) => r.status == 200});
 
@@ -257,18 +285,22 @@ export default function (data) {
             unsuccessfulAnnouncePage.add(1);
         }
 
+        check(announceRes, {
+            "Announcement page loading time less than 5s": (r) =>
+                r.timings.duration <= 5000,
+        });
     });
 
     // +++++++++ Write comment +++++++++\\
     group("Write comment", function() {
 
         let urlQuery = "sesskey="+sessKey+"&info=mod_forum_add_discussion_post";
-        const urlComment = "https://moodle.test.dbildungscloud.org/lib/ajax/service.php?"+urlQuery;
+        const urlComment = "https://"+ moodleEnvironment +"/lib/ajax/service.php?"+urlQuery;
         let payload = [{
             "index":0,
             "methodname":"mod_forum_add_discussion_post",
             "args":{
-                "postid": data.idObject.parentPostID,
+                "postid": parentPostID,
                 "message":"test message "+ sessKey,
                 "messageformat":0,
                 "subject":"Re: Loadtest announcement "+ sessKey,
@@ -283,7 +315,7 @@ export default function (data) {
             cookies: {
                 MoodleSession: cookie.MoodleSession[0],
                 MOODLEID1_: cookie.MOODLEID1_[0],
-            },
+            },//MOre confirmation
         });        
         
         //Gets the comment answer ID for later deletion from creation response
@@ -294,13 +326,17 @@ export default function (data) {
         //Check comment creation results
         let checkCommentWrittenSuccess = check(commentRes, {
             "comment creation successful": (r) =>
-              r.body.indexOf("test message "+ sessKey) !== -1,
+              r.body.includes(sessKey),
         });
 
         if(checkCommentWrittenSuccess){
             commentsCreated.add(1);
         }
 
+        check(commentRes, {
+            "Comment creation time less than 5s": (r) =>
+                r.timings.duration <= 5000,
+        });
     });
 
     // +++++++++ Sleep +++++++++\\
@@ -315,7 +351,7 @@ export default function (data) {
             "sesskey": sessKey,
         };
 
-        const commentDelRes = http.post('https://moodle.test.dbildungscloud.org/mod/forum/post.php', formdata, {
+        const commentDelRes = http.post("https://"+ moodleEnvironment +"/mod/forum/post.php", formdata, {
             cookies: {
                 MoodleSession: cookie.MoodleSession[0],
                 MOODLEID1_: cookie.MOODLEID1_[0],
@@ -327,23 +363,34 @@ export default function (data) {
 
         //Check comment deletion results
         let checkCommentDeletionSuccess = check(commentDelRes, {
-            "Comment deleted and success popup displayed": (r) =>
-              r.body.indexOf("Beitrag gelöscht") !== -1,
+            "deletion success popup displayed": (r) =>
+              r.body.includes("Beitrag gelöscht"),
         });
 
-        if(checkCommentDeletionSuccess){
+        //Check comment deletion results
+        let checkCommentExistenceAfterDeletion = check(commentDelRes, {
+            "comment present in html after deletion popup": (r) => {
+              (r.body.includes(sessKey));
+            }
+        });
+        
+        if(checkCommentDeletionSuccess && (checkCommentExistenceAfterDeletion==false)){
             commentsDeleted.add(1);
         }
 
+        check(commentDelRes, {
+            "Comment deletion time less than 5s": (r) =>
+                r.timings.duration <= 5000,
+        });
     });
 
 
     // +++++++++ Logout process +++++++++\\
     group("Logout process", function () {
         
-        const urlLogout = "https://moodle.test.dbildungscloud.org/login/logout.php?sesskey="+sessKey;
+        const urlLogout = "https://"+ moodleEnvironment +"/login/logout.php?sesskey="+sessKey;
         let payload = {logintoken: "${token}"};
-        const urlAnnouncement = "https://moodle.test.dbildungscloud.org/mod/forum/discuss.php?d=1";
+        const urlAnnouncement = "https://"+ moodleEnvironment +"/mod/forum/discuss.php?d=1";
 
         //make logout reguest
         let logoutRes = http.get(urlLogout, payload);
