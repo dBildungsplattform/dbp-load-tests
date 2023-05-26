@@ -5,7 +5,9 @@ import { SharedArray } from 'k6/data';
 const data = new SharedArray('users', function() {
     const f = JSON.parse(open('../secrets/managerlogin.json'));
     return f;
-}); 
+});
+
+let moodleEnvironment = __ENV.ENVIRONMENT;
 
 export default async function() {
     const browser = chromium.launch({ headless: true, args: ["no-sandbox"]});
@@ -14,7 +16,7 @@ export default async function() {
     let managerUser = data[Math.floor(Math.random() * data.length)];
 
     //Login
-    await page.goto('https://moodle.dev-scaling-test.dbildungsplattform.de/login/index.php');
+    await page.goto("https://"+ moodleEnvironment +"/login/index.php");
 
     page.locator('input[id="username"]').type(managerUser.username);
     page.locator('input[id="password"]').type(managerUser.password);

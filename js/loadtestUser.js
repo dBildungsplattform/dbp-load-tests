@@ -76,8 +76,6 @@ export function setup() {
     check (setupCourseCreationRes, {'Course creation status was 200': (r) => r.status == 200});
 
     //Create announcement for users to comment
-
-    //Create multiple announcements and spread users randomly over them to avoid congestion TODO
     const urlAnnouncement = "https://"+ moodleEnvironment +"/mod/forum/post.php";
 
     let newSetupAnnouncementData = setupAnnouncementData;
@@ -367,7 +365,7 @@ export default function (data) {
               r.body.includes("Beitrag gelöscht"),
         });
 
-        //Check comment deletion results
+        //Check comment deletion results, does not work properly right now
         let checkCommentExistenceAfterDeletion = check(commentDelRes, {
             "comment present in html after deletion popup": (r) => {
               (r.body.includes(sessKey));
