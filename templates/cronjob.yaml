@@ -32,10 +32,11 @@ spec:
                   secretKeyRef:
                     name: vminsert-credentials
                     key: password
+              - name: OPTIONS_FILE_PATH
+                value: 300s100u.json
             args:
-              ['run', '-u', '0', '-s', '{{ $job_options.scalingDuration }}:{{ $job_options.loadVUs }}',
-                         '-s', '{{ $job_options.peakDuration }}:{{ $job_options.loadVUs }}',
-                         '-s', '{{ $job_options.scalingDuration }}:0', '/scripts/{{ $job_options.scriptPath }}',
+              ['run', '-u', '0',
+                         '/scripts/{{ $job_options.scriptPath }}',
                          '--tag','NAME={{ $job_options.serviceName }}',
                          '--out', 'experimental-prometheus-rw',
                          '-e', 'ENVIRONMENT={{ $job_options.environment }}']
@@ -47,6 +48,8 @@ spec:
             - name: secret-volume
               mountPath: /secrets
               readOnly: true
+            - name: config-options
+              mountPath: /options
             ports:
             - containerPort: {{ $job_options.port }}
               name: loadtest-pod
@@ -60,6 +63,9 @@ spec:
           - name: secret-volume
             secret:
               secretName: login-secret
+          - name: config-options
+            configMap:
+              name: configmap-moodle-options
           restartPolicy: OnFailure
 ---
 {{- end}}

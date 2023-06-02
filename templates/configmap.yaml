@@ -5,8 +5,8 @@ metadata:
   namespace: loadtest
 data:
   loadtestManager.js: |-
-{{ .Files.Get "js/loadtestManager.js" | indent 4}}
+{{ .Files.Get "tests/loadtestManager.js" | indent 4}}
   loadtestUser.js: |-
-{{ .Files.Get "js/loadtestUser.js" | indent 4}}
+{{ .Files.Get "tests/loadtestUser.js" | indent 4}}
   browserLoadtest.js: |-
-{{ .Files.Get "js/browserLoadtest.js" | indent 4}}
+{{ .Files.Get "tests/browserLoadtest.js" | indent 4}}

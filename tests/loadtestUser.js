@@ -25,6 +25,9 @@ let unsuccessfulLogouts = new Counter("unsuccessful_logouts");
 let commentsCreated = new Counter("Comments written");
 let commentsDeleted = new Counter("Comments deleted");
 let moodleEnvironment = __ENV.ENVIRONMENT;
+let optionsPath = '../options/'+ __ENV.OPTIONS_FILE_PATH;
+
+export const options = JSON.parse(open(optionsPath));
 
 //Create loadtest setup environment
 export function setup() { 
