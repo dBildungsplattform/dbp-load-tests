@@ -5,14 +5,14 @@ metadata:
   namespace: loadtest
 data:
   responseHelper.js: |-
-{{ .Files.Get "lib/responseHelper.js" | indent 4}}
+{{ .Files.Get "loadtest/lib/responseHelper.js" | indent 4}}
   metricHelper.js: |-
-{{ .Files.Get "lib/metricHelper.js" | indent 4}}
+{{ .Files.Get "loadtest/lib/metricHelper.js" | indent 4}}
   coursePage.js: |-
-{{ .Files.Get "pages/coursePage.js" | indent 4}}
+{{ .Files.Get "loadtest/pages/coursePage.js" | indent 4}}
   loginPage.js: |-
-{{ .Files.Get "pages/loginPage.js" | indent 4}}
+{{ .Files.Get "loadtest/pages/loginPage.js" | indent 4}}
   logoutPage.js: |-
-{{ .Files.Get "pages/logoutPage.js" | indent 4}}
+{{ .Files.Get "loadtest/pages/logoutPage.js" | indent 4}}
   announcementPage.js: |-
-{{ .Files.Get "pages/announcementPage.js" | indent 4}}
+{{ .Files.Get "loadtest/pages/announcementPage.js" | indent 4}}
