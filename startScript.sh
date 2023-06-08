@@ -13,7 +13,7 @@ while getopts "o:e:" opt
 do
    case "$opt" in
       o ) optionsParameter="$OPTARG" ;;
-      e ) envParameter="$OPTARG" ;; # For later user to change the test environment dynamically
+      e ) envParameter="$OPTARG" ;; # For later use to change the test environment dynamically
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done

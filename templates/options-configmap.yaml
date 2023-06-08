@@ -4,6 +4,8 @@ metadata:
   name: configmap-moodle-options
   namespace: loadtest
 data:
+  60s20u.json: |-
+{{ .Files.Get "config/options/60s20u.json" | indent 4}}
   300s100u.json: |-
 {{ .Files.Get "config/options/300s100u.json" | indent 4}}
   300s250u.json: |-

@@ -13,6 +13,9 @@ const courseData = JSON.parse(open('../data/coursetemplate.json'));
 let successfulLogins = new Counter("successful_logins");
 let unsuccessfulLogins = new Counter("unsuccessful_logins");
 let moodleEnvironment = __ENV.ENVIRONMENT;
+let optionsPath = '../options/'+ __ENV.OPTIONS_FILE_PATH;
+
+export const options = JSON.parse(open(optionsPath));
 
 export default function () {
 

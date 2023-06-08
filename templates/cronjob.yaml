@@ -33,7 +33,7 @@ spec:
                     name: vminsert-credentials
                     key: password
               - name: OPTIONS_FILE_PATH
-                value: 300s100u.json
+                value: 60s20u.json
             args:
               ['run', '-u', '0',
                          '/scripts/{{ $job_options.scriptPath }}',
@@ -50,6 +50,8 @@ spec:
               readOnly: true
             - name: config-options
               mountPath: /options
+            - name: config-helper
+              mountPath: /helper
             ports:
             - containerPort: {{ $job_options.port }}
               name: loadtest-pod
@@ -66,6 +68,9 @@ spec:
           - name: config-options
             configMap:
               name: configmap-moodle-options
+          - name: config-helper
+            configMap:
+              name: configmap-moodle-helper
           restartPolicy: OnFailure
 ---
 {{- end}}

@@ -8,6 +8,9 @@ const data = new SharedArray('users', function() {
 });
 
 let moodleEnvironment = __ENV.ENVIRONMENT;
+let optionsPath = '../options/'+ __ENV.OPTIONS_FILE_PATH;
+
+export const options = JSON.parse(open(optionsPath));
 
 export default async function() {
     const browser = chromium.launch({ headless: true, args: ["no-sandbox"]});

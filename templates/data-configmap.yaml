@@ -8,3 +8,5 @@ data:
 {{ .Files.Get "data/courseParameters.json" | indent 4}}
   announcementtemplate.json: |-
 {{ .Files.Get "data/announcementParameters.json" | indent 4}}
+  commenttemplate.json: |-
+{{ .Files.Get "data/commentParameters.json" | indent 4}}
