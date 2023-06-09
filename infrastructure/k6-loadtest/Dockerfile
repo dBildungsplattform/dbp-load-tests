@@ -2,9 +2,9 @@
 FROM grafana/k6:0.43.1
 USER root
 
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y git
+RUN apk-get update && \
+    apk-get upgrade -y && \
+    apk-get add -y git
 
 COPY wrapper-script.sh wrapper-script.sh
 RUN chmod +x wrapper-script.sh
