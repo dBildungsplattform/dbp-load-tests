@@ -1,7 +1,7 @@
 #!/bin/sh
 
-git clone https://github.com/dBildungsplattform/dbp-load-tests.git
-ls dbp-load-tests/
+git clone https://github.com/dBildungsplattform/dbp-load-tests.git #We need to install git for this
+ls 
 cd dbp-load-tests
 git checkout $BRANCH
 
