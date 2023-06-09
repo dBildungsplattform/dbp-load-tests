@@ -1,5 +1,5 @@
 import { Counter } from "k6/metrics";
-import { check } from "k6";
+import { check, fail } from "k6";
 
 export default class MetricHelper {
     constructor(){
@@ -7,6 +7,8 @@ export default class MetricHelper {
         this.unsuccessfulLogins = new Counter("unsuccessful_logins");
         this.successfulCoursePage = new Counter("successful_course_displayed");
         this.failedCoursePage = new Counter("unsuccessful_course_displayed");
+        this.successfulCourseCreated = new Counter("successful_course_created");
+        this.successfulAnnounceCreated = new Counter("successful_announcement_created");
         this.successfulAnnouncePage = new Counter("successful_announcement_displayed");
         this.failedAnnouncePage = new Counter("unsuccessful_announcement_displayed");
         this.successfulLogouts = new Counter("successful_logouts");
@@ -36,14 +38,17 @@ export default class MetricHelper {
               r.body.indexOf("Willkommen zurück, ") !== -1,
         });
       
-        let checkLoginFailure =  (res) => res.body.indexOf("Ungültige Anmeldedaten. Versuchen Sie es noch einmal!") !== -1;
+        let checkLoginFailure =  (res) => res.body.includes("Ungültige Anmeldedaten. Versuchen Sie es noch einmal!");
 
         if(checkLoginSuccess) {
             this.successfulLogins.add(1);
-        } else if(checkLoginFailure) this.unsuccessfulLogins.add(1);
+        }
 
-        checkStatusCode(res);
         checkResponseDuration(res);
+        if((checkStatusCode(res) !== true) || (checkLoginFailure === true)){
+            this.unsuccessfulLogins.add(1);
+            fail('Login Status code was not 200');
+        }
         return 0;
     }
 
@@ -136,9 +141,27 @@ export default class MetricHelper {
         return 0;
     }
 
+    checkAnnouncementCreation(res){
+        checkResponseDuration(res);
+        if(checkStatusCode(res) !== true) {
+            fail("Announcement creation failed");
+        }
+        this.successfulAnnounceCreated.add(1);
+        return 0;
+    }
+
     checkAnnouncementDeletion(res){
         checkStatusCode(res);
         checkResponseDuration(res);
+        return 0;
+    }
+
+    checkCourseCreation(res){
+        checkResponseDuration(res);
+        if(checkStatusCode(res) !== true) {
+            fail("Course creation failed!");
+        }
+        this.successfulCourseCreated.add(1);
         return 0;
     }
 
@@ -151,8 +174,7 @@ export default class MetricHelper {
 
 //Any way on making the check identifier dynamic?
 function checkStatusCode(res) {
-    check (res, {"Response status was 200": (r) => r.status == 200});
-    return 0;
+    return check(res, {"Response status was 200": (r) => r.status == 200});
 }
 
 function checkResponseDuration(res) {

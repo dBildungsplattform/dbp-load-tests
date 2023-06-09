@@ -33,10 +33,12 @@ spec:
                     name: vminsert-credentials
                     key: password
               - name: OPTIONS_FILE_PATH
-                value: 60s20u.json
+                value: 30s1u.json
+              - name: BRANCH
+                value: main
             args:
               ['run', '-u', '0',
-                         '/scripts/{{ $job_options.scriptPath }}',
+                         '/loadtest/tests/{{ $job_options.scriptPath }}',
                          '--tag','NAME={{ $job_options.serviceName }}',
                          '--out', 'experimental-prometheus-rw',
                          '-e', 'ENVIRONMENT={{ $job_options.environment }}']

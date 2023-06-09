@@ -29,6 +29,7 @@ export default class CoursePage {
             //Get the created discussion ID
             let discussID = announceCreationRes.html().find("tr[class~=discussion]").attr('data-discussionid');
             discussionIDs[i] = discussID;
+            this.metricHelper.checkAnnouncementCreation(announceCreationRes);
             sleep(0.5);//Sleep so there won't be race condition problems
         }
         return discussionIDs;

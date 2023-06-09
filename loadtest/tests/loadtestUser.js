@@ -24,7 +24,7 @@ export const options = JSON.parse(open(optionsPath));
 
 let metricHelper = new MetricHelper();
 
-//Create loadtest setup environment
+// +++++++++ Setup Stage, preparation for the loadtest +++++++++\\
 export function setup() {
     const loginPage = new LoginPage(metricHelper);
     const coursePage = new CoursePage(metricHelper);
@@ -51,7 +51,6 @@ export function setup() {
         courseID: courseID,
         discussionID: discussionIDs
     }
-    //TODO Check if everything in Setup was successful Threshold?
     return { idObject: returnData };
 }
 
@@ -76,30 +75,22 @@ export default function (data) {
 
     // +++++++++ Login process +++++++++\\
     group("Login process", function () {
-
         //Check if User is already logged in
         token = loginPage.checkAlreadyLoggedIn();  
-
-        sleep((Math.random()*5)+3);
+        sleep(1);
 
         //Choose random user from login credentials
         const randomUser = helperFunctions.getRandomUser(userLoginData);
-
-        //make login request
         let loginResData = loginPage.login(randomUser);
         cookie = loginResData.cookie;   
         sessKey = loginResData.session;
     });
 
+    sleep((Math.random()*5)+3);
 
     // +++++++++ Course page +++++++++\\
-    group("Course page", function () {
-
-        sleep((Math.random()*5)+3);
-
-        //make course request
+    group("Course page", function () { 
         coursePage.viewCourse(data.idObject.courseID, token);
- 
     });
 
 
@@ -114,20 +105,17 @@ export default function (data) {
 
     // +++++++++ Write comment +++++++++\\
     group("Write comment", function() {
-
         announcementPage.createAnnouncementComment(commentData, cookie, parentPostID);   
     });
 
-    // +++++++++ Sleep +++++++++\\
-        sleep((Math.random()*10)+5);
+    sleep((Math.random()*10)+5);
 
     // +++++++++ Delete comment +++++++++\\
     group("Delete comment", function() {
-
         announcementPage.deleteComment(cookie);
-        sleep(3);
     });
 
+    sleep(3);
 
     // +++++++++ Logout process +++++++++\\
     group("Logout process", function () {

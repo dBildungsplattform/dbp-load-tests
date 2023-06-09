@@ -22,10 +22,10 @@ export default function () {
     const coursePage = new CoursePage(metricHelper);
     let announcementPage;
     let token;
-    let sessKey = "";
-    let cookie = "";
-    let announceID = 0;
-    let courseID = 0;
+    let sessKey;
+    let cookie;
+    let announceID;
+    let courseID;
 
     // +++++++++ Front page +++++++++\\
     group("Front page", function () {

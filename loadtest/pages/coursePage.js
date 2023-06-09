@@ -27,6 +27,7 @@ export default class CoursePage {
         this.session = sessionKey;
         this.cookie = cookie;
 
+        this.metricHelper.checkCourseCreation(courseCreationRes);
         return this.courseID;
     }
 
