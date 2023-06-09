@@ -36,10 +36,7 @@ export default class MetricHelper {
               r.body.indexOf("Willkommen zurück, ") !== -1,
         });
       
-        let checkLoginFailure = check(res, {
-            "unsuccessful Logins, header present": (r) =>
-              r.body.indexOf("Ungültige Anmeldedaten. Versuchen Sie es noch einmal!") !== -1,
-        });
+        let checkLoginFailure =  (res) => res.body.indexOf("Ungültige Anmeldedaten. Versuchen Sie es noch einmal!") !== -1;
 
         if(checkLoginSuccess) {
             this.successfulLogins.add(1);
@@ -136,6 +133,18 @@ export default class MetricHelper {
         }else{
             this.unsuccessfulLogouts.add(1);
         }
+        return 0;
+    }
+
+    checkAnnouncementDeletion(res){
+        checkStatusCode(res);
+        checkResponseDuration(res);
+        return 0;
+    }
+
+    checkCourseDeletion(res){
+        checkStatusCode(res);
+        checkResponseDuration(res);
         return 0;
     }
 }

@@ -1,6 +1,6 @@
 import { group, sleep } from "k6";
 import { SharedArray } from 'k6/data';
-import * as helperFunctions from "../helper/responseHelper.js";
+import * as helperFunctions from "../helper/userHelper.js";
 import LoginPage from "../helper/loginPage.js";
 import LogoutPage from "../helper/logoutPage.js";
 import CoursePage from "../helper/coursePage.js";
@@ -36,7 +36,8 @@ export function setup() {
     let cookie = setupLogin.cookie; 
 
     //Create new course and get course ID
-    let courseID = coursePage.createNewCourse(setupSessKey, setupCourseData, cookie);
+    let prefix = "User setup";
+    let courseID = coursePage.createNewCourse(setupSessKey, setupCourseData, cookie, prefix);
     const announcementPage = new AnnouncementPage(setupSessKey);
     sleep(1);
     //Create announcement for users to comment

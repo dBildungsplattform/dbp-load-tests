@@ -31,7 +31,6 @@ export default class CoursePage {
             discussionIDs[i] = discussID;
             sleep(0.5);//Sleep so there won't be race condition problems
         }
-        console.log("DiscussionID Array: "+discussionIDs);
         return discussionIDs;
     }
 
@@ -82,6 +81,31 @@ export default class CoursePage {
         });
 
         this.metricHelper.checkCommentDeletion(commentDelRes, this.session);
+        return 0;
+    }
+
+    deleteAnnouncement(announceID, cookie) {
+        const urlDiscussionPost = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/discuss.php?d="+announceID;
+        const urlAnnounceDelete = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/post.php";
+
+        let discussionGetRes = http.get(urlDiscussionPost);
+
+        //Get the actual post ID for deletion
+        const forumPostID = discussionGetRes.html().find('div[data-content=forum-post]').attr('data-post-id');
+        const announceDelData = {
+            'delete': forumPostID,
+            'confirm': forumPostID,
+            'sesskey': this.session,
+        };
+        
+        let announceDeletionRes = http.post(urlAnnounceDelete, announceDelData, {
+            cookies: {
+                MoodleSession: cookie.MoodleSession[0],
+                MOODLEID1_: cookie.MOODLEID1_[0],
+            },
+        });
+
+        this.metricHelper.checkAnnouncementDeletion(announceDeletionRes);
         return 0;
     }
 }

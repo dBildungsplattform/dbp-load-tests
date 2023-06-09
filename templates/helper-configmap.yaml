@@ -4,8 +4,8 @@ metadata:
   name: configmap-moodle-helper
   namespace: loadtest
 data:
-  responseHelper.js: |-
-{{ .Files.Get "loadtest/lib/responseHelper.js" | indent 4}}
+  userHelper.js: |-
+{{ .Files.Get "loadtest/lib/userHelper.js" | indent 4}}
   metricHelper.js: |-
 {{ .Files.Get "loadtest/lib/metricHelper.js" | indent 4}}
   coursePage.js: |-
