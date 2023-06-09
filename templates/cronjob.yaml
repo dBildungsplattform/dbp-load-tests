@@ -35,7 +35,7 @@ spec:
               - name: OPTIONS_FILE_PATH
                 value: 30s1u.json
               - name: BRANCH
-                value: main
+                value: clone-test-image
             args:
               ['run', '-u', '0',
                          '/loadtest/tests/{{ $job_options.scriptPath }}',
