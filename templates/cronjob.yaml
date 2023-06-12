@@ -38,7 +38,7 @@ spec:
                 value: clone-test-image
             args:
               ['run', '-u', '0',
-                         '/loadtest/tests/{{ $job_options.scriptPath }}',
+                         './loadtest/tests/{{ $job_options.scriptPath }}',
                          '--tag','NAME={{ $job_options.serviceName }}',
                          '--out', 'experimental-prometheus-rw',
                          '-e', 'ENVIRONMENT={{ $job_options.environment }}']

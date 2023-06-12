@@ -9,7 +9,7 @@ import AnnouncementPage from "../pages/announcementPage.js";
 
 //Access JSON data from files
 const userLoginData = new SharedArray('users', function() {
-    const f = JSON.parse(open('../secrets/userlogin.json'));
+    const f = JSON.parse(open('../../../secrets/userlogin.json'));
     return f;
 });
 

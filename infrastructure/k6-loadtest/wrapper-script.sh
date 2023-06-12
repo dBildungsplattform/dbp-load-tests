@@ -1,12 +1,19 @@
 #!/bin/sh
 
 git clone https://github.com/dBildungsplattform/dbp-load-tests.git
-ls 
-cd dbp-load-tests
+#cd dbp-load-tests
+cd ..
+echo "One up"
 ls
-git checkout $BRANCH
-echo "Working BRANCH"
+cd ..
+echo "Two up"
 ls
+cd ..
+echo "Three up"
+ls
+#git checkout $BRANCH
+#echo "Working BRANCH"
+
 
 K6_PROMETHEUS_RW_SERVER_URL=http://servicecenter-vminsert.servicecenterlocal/insert/0/prometheus/ \
 K6_PROMETHEUS_RW_USERNAME=$SECRET_USERNAME \
