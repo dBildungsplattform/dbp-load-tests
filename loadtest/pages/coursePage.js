@@ -35,7 +35,6 @@ export default class CoursePage {
     viewCourse(courseID, token, checkPrefix){
         let payload = {logintoken: token};
         let viewUrl = "https://"+ __ENV.ENVIRONMENT +"/course/view.php?id="+courseID;
-        console.log(viewUrl);
         let courseRes = http.get(viewUrl, payload);
 
         this.metricHelper.checkCoursePageOpened(courseRes, checkPrefix);

@@ -26,7 +26,7 @@ export default class MetricHelper {
     checkCurrentLoginStatus(res){
         check(res, {
             "User isn't logged in": (r) =>
-                r.body.indexOf("Login bei 'Moodle'") !== -1,
+                r.body.includes("Login bei 'Moodle'"),
             });
             return 0;
     }
@@ -35,7 +35,7 @@ export default class MetricHelper {
 
         let checkLoginSuccess = check(res, {
             "is logged in welcome header present": (r) =>
-              r.body.indexOf("Willkommen zurück, ") !== -1,
+              r.body.includes("Willkommen zurück, "),
         });
       
         let checkLoginFailure =  (res) => res.body.includes("Ungültige Anmeldedaten. Versuchen Sie es noch einmal!");
@@ -56,7 +56,7 @@ export default class MetricHelper {
 
         let courseDisplayed = check(res, {
             "successful entered course": (r) =>
-              r.body.indexOf(prefix+" course:") !== -1,
+              r.body.includes(prefix+" course:"),
         });
 
         if(courseDisplayed) {
@@ -74,7 +74,7 @@ export default class MetricHelper {
 
         let announcementDisplayed = check(res, {
             "successful entered announcement page": (r) =>
-              r.body.indexOf("Loadtest Announcement for") !== -1,
+              r.body.includes("Loadtest Announcement for"),
         });
 
         if(announcementDisplayed){
@@ -105,14 +105,18 @@ export default class MetricHelper {
 
     checkCommentDeletion(res, session){
 
-        check(res, {
+        let commentDeleted = check(res, {
             "deletion success popup displayed": (r) =>
               r.body.includes("Beitrag gelöscht"),
         });
+
+        if(commentDeleted){
+            this.commentsDeleted.add(1);
+        }
         
         check(res, {
             "comment not present in html after deletion popup": (r) => {
-              (r.body.includes(session)===false);
+              (r.body.includes(session)!==true);
             }
         });
 
@@ -130,7 +134,7 @@ export default class MetricHelper {
     verifyLogout(res){
         let checkSuccessfullLogout = check(res, {
             "Logout successfull": (r) =>
-            r.body.indexOf("This is a loadtest announcement") == -1,//Should not have access to this page if logged out
+            r.body.includes("This is a loadtest announcement") !== true,//Should not have access to this page if logged out
         });
 
         if (checkSuccessfullLogout) {
