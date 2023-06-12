@@ -1,11 +1,11 @@
 import { group, sleep } from "k6";
 import { SharedArray } from 'k6/data';
-import * as helperFunctions from "../helper/userHelper.js";
-import LoginPage from "../helper/loginPage.js";
-import LogoutPage from "../helper/logoutPage.js";
-import CoursePage from "../helper/coursePage.js";
-import MetricHelper from "../helper/metricHelper.js";
-import AnnouncementPage from "../helper/announcementPage.js";
+import * as helperFunctions from "../lib/userHelper.js";
+import LoginPage from "../pages/loginPage.js";
+import LogoutPage from "../pages/logoutPage.js";
+import CoursePage from "../pages/coursePage.js";
+import MetricHelper from "../lib/metricHelper.js";
+import AnnouncementPage from "../pages/announcementPage.js";
 
 //Access JSON data from files
 const userLoginData = new SharedArray('users', function() {

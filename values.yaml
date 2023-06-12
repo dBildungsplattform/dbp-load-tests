@@ -1,6 +1,5 @@
 cronjobs:
   manager-scenario:
-    jobsParallelism: 1
     scriptPath: loadtestManager.js
     schedule: 0 8 * * *
     port: 5656
@@ -8,7 +7,6 @@ cronjobs:
     image: ghcr.io/dbildungsplattform/k6-loadtest:latest
     environment: moodle.test.dbildungscloud.org
   user-scenario:
-    jobsParallelism: 1
     scriptPath: loadtestUser.js
     schedule: 0 8 * * *
     port: 5656
@@ -16,7 +14,6 @@ cronjobs:
     image: ghcr.io/dbildungsplattform/k6-loadtest:latest
     environment: moodle.test.dbildungscloud.org
   browser-scenario:
-    jobsParallelism: 1
     scriptPath: browserLoadtest.js
     schedule: 0 8 * * *
     port: 5656
