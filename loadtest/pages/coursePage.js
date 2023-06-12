@@ -4,9 +4,9 @@ export default class CoursePage {
     constructor(metricHelper){
         this.creationUrl = "https://"+ __ENV.ENVIRONMENT +"/course/edit.php";
         this.metricHelper = metricHelper;
-        this.courseID = 0;
-        this.session = 0;
-        this.cookie = 0;
+        this.courseID;
+        this.session;
+        this.cookie;
     }
 
     //Creates a new course and returns the corresponding course ID

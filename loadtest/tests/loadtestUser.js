@@ -27,8 +27,8 @@ let metricHelper = new MetricHelper();
 // +++++++++ Setup Stage, preparation for the loadtest +++++++++\\
 export function setup() {
     const loginPage = new LoginPage(metricHelper);
-    const coursePage = new CoursePage(metricHelper);
     let token = loginPage.checkAlreadyLoggedIn();
+    const coursePage = new CoursePage(metricHelper);
 
     //User Login
     let setupLogin = loginPage.login(setupLoginData[0]);
@@ -38,7 +38,7 @@ export function setup() {
     //Create new course and get course ID
     let prefix = "User setup";
     let courseID = coursePage.createNewCourse(setupSessKey, setupCourseData, cookie, prefix);
-    const announcementPage = new AnnouncementPage(setupSessKey);
+    const announcementPage = new AnnouncementPage(setupSessKey, metricHelper);
     sleep(1);
     //Create announcement for users to comment
     let announcementAmount = 4;

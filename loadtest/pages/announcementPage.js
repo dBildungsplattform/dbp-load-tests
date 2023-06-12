@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { sleep } from "k6";
 
-export default class CoursePage {
+export default class AnnouncementPage {
     constructor(session, metricHelper){
         this.announcementUrl = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/post.php";
         this.session = session;
