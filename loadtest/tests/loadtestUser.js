@@ -9,11 +9,11 @@ import AnnouncementPage from "../pages/announcementPage.js";
 
 //Access JSON data from files
 const userLoginData = new SharedArray('users', function() {
-    const f = JSON.parse(open('../../../secrets/userlogin.json'));
+    const f = JSON.parse(open('../../../../../../secrets/userlogin.json'));
     return f;
 });
 
-const setupLoginData = JSON.parse(open('../secrets/managerlogin.json'));
+const setupLoginData = JSON.parse(open('../../../../../../secrets/managerlogin.json'));
 const setupCourseData = JSON.parse(open('../data/coursetemplate.json'));
 let setupAnnouncementData = JSON.parse(open('../data/announcementtemplate.json'));
 let commentData = JSON.parse(open('../data/commenttemplate.json'));
