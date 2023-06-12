@@ -13,5 +13,5 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-tests/userLogin.json
-tests/managerLogin.json
+loadtest/tests/userLogin.json
+loadtest/tests/managerLogin.json
