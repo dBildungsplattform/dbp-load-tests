@@ -3,6 +3,7 @@
 git clone https://github.com/dBildungsplattform/dbp-load-tests.git
 ls 
 cd dbp-load-tests
+ls
 git checkout $BRANCH
 
 K6_PROMETHEUS_RW_SERVER_URL=http://servicecenter-vminsert.servicecenterlocal/insert/0/prometheus/ \
