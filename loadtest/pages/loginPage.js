@@ -1,3 +1,7 @@
+//The Login Page is a Object that offers all available functionalities surrounding the Login.
+//The Object will be created once per virtual User
+//Requires:
+//----metricHelper Object to have a singular set of Counters during the whole Test
 import http from "k6/http";
 
 export default class LoginPage {
@@ -8,6 +12,7 @@ export default class LoginPage {
         this.metricHelper = metricHelper;
     }
 
+    //Simple check if the Frontpage is accessible
     getFrontpage(){
         let res = http.get('https://'+ __ENV.ENVIRONMENT +'/');
 
@@ -16,7 +21,8 @@ export default class LoginPage {
     }
 
     //Checks if the User is already logged in
-    //Returns the logintoken
+    //Returns:
+    //----token: logintoken for identification
     checkAlreadyLoggedIn() {
         let res = http.get(this.url);
         this.token = res.html().find('input[name=logintoken]').attr('value');
@@ -27,6 +33,10 @@ export default class LoginPage {
     }
 
     //Login process, returns a object with cookie and session
+    //Requires:
+    //----loginData: Contains the secret username and password
+    //Returns:
+    //----Object consisting of cookie and session Key
     login(loginData) {
         let payload = {
             username: loginData.username,

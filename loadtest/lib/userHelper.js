@@ -1,9 +1,13 @@
+//Helps with operations surrounding user handling
 import http from "k6/http";
 
+//Get a random user from the Array of users
 export function getRandomUser(users) {
     return users[Math.floor(Math.random() * users.length)];
 }
 
+//Grants the Users access to a course
+//Only works with specific user IDs currently hardcoded in the URL
 export function setupUsers(userCourseID, sessionKey, cookie, token) {
     let enrolPageUrl = "https://"+ __ENV.ENVIRONMENT +"/user/index.php?id="+userCourseID;
     let payload = {logintoken: token};

@@ -1,3 +1,7 @@
+//The Course Page is a Object that offers all available functionalities surrounding the Course.
+//The Object will be created once per virtual User
+//Requires:
+//----metricHelper Object to have a singular set of Counters during the whole Test
 import http from "k6/http";
 
 export default class CoursePage {
@@ -10,6 +14,11 @@ export default class CoursePage {
     }
 
     //Creates a new course and returns the corresponding course ID
+    //Required:
+    //----courseData: The json-template to create a course
+    //----prefix: a Naming prefix to create a unique name in combination with the sessionKey
+    //Returns:
+    //----courseID: Id of the created course for later identification
     createNewCourse(sessionKey, courseData, cookie, prefix){
         courseData.sesskey = sessionKey;
         courseData.fullname = prefix+ " course: " + sessionKey;
@@ -31,7 +40,11 @@ export default class CoursePage {
         return this.courseID;
     }
 
-    //User views the course, can't make use of 'this' Course Creation parameter
+    //Get the Course Page with courseID
+    //Users who view a course are unlikely to create the course => no access to this.courseID
+    //Required:
+    //----courseID: defines which course should be displayed
+    //----prefix: Handed to the check to look for the correct prefix
     viewCourse(courseID, token, checkPrefix){
         let payload = {logintoken: token};
         let viewUrl = "https://"+ __ENV.ENVIRONMENT +"/course/view.php?id="+courseID;
@@ -41,6 +54,9 @@ export default class CoursePage {
         return 0;
     }
 
+
+    //Deletes a given course
+    //The course will be deleted by the person who created it => access to this.courseID
     deleteCourse(){
         const courseUrl = "https://"+ __ENV.ENVIRONMENT +"/course/delete.php?id="+this.courseID;
 

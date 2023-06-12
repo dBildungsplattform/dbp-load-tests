@@ -1,3 +1,8 @@
+//The Logout Process is a Object that offers all available functionalities surrounding the Logout.
+//The Object will be created once per virtual User
+//Requires:
+//----metricHelper Object to have a singular set of Counters during the whole Test
+//----sessKey: The sessionKey to identify the user who gets logged out
 import http from "k6/http";
 
 export default class LogoutPage {
@@ -7,6 +12,7 @@ export default class LogoutPage {
         this.metricHelper = metricHelper;
     }
 
+    //Logout of the specific User
     logout() {
         let payload = {logintoken: this.token};
         let logoutRes = http.get(this.url, payload);
@@ -14,6 +20,9 @@ export default class LogoutPage {
         return 0;
     }
 
+    //Verifies the successfull Logout by trying to access a restricted page
+    //Requires:
+    //----discussionID: Tries to access the specific discussion which is Login restricted
     verifyLogout(discussionID){
         let payload = {logintoken: this.token};
         const logoutVerifyUrl = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/discuss.php?d="+discussionID;

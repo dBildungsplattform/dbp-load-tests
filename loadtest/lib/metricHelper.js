@@ -1,3 +1,6 @@
+//The metric helper Object will be used to track the used counters over the course of the test.
+//Will be needed to hand over to constructors of other pages to have one set of counters in the whole test
+//This Object will be used to run different checks of metrics and add up the counters for the final result metrics.
 import { Counter } from "k6/metrics";
 import { check, fail } from "k6";
 
@@ -136,7 +139,7 @@ export default class MetricHelper {
     verifyLogout(res){
         let checkSuccessfullLogout = check(res, {
             "Logout successfull": (r) =>
-            r.body.includes("This is a loadtest announcement") !== true,//Should not have access to this page if logged out
+            r.body.includes("This is a loadtest announcement") !== true,
         });
 
         if (checkSuccessfullLogout) {

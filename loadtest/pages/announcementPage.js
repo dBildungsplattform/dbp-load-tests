@@ -1,3 +1,8 @@
+//The Announcement Page is a Object that offers all available functionalities surrounding the Announcements.
+//The Object will be created once per virtual User
+//Requires:
+//----Users specific Session Key
+//----metricHelper Object to have a singular set of Counters during the whole Test
 import http from "k6/http";
 import { sleep } from "k6";
 
@@ -9,6 +14,11 @@ export default class AnnouncementPage {
     }
 
     //Create desired amount of Setup Announcements and return an Array of Discussion ID's corresponding to the created Announcements
+    //Requires:
+    //----courseID: Identifies the course the announcement will be created in
+    //----announcementData: The json template to create a announcement
+    //----amount: Number of announcements to create
+    //Returns: The ID or ID Array of the created Announcements, refered to as discussions
     createAnnouncement(announcementData, courseID, cookie, amount){
         announcementData.sesskey = this.session;
         announcementData.course = courseID;
@@ -35,6 +45,11 @@ export default class AnnouncementPage {
         return discussionIDs;
     }
 
+    //Makes a GET-request to view the Announcement Page and returns a parent Post ID to identify the Post for later commentary posts
+    //Requires:
+    //----Discussion ID: Identifies the Announcement in the Forum of a Course where User comments can be added
+    //Returns:
+    //----parentPostID: The Announcement ID inside the actual Announcement to refer to the parent post for future comments
     getAnnouncementPage(discussionID, token) {
         let payload = {logintoken: token};
         const urlAnnouncement = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/discuss.php?d="+discussionID;
@@ -45,6 +60,10 @@ export default class AnnouncementPage {
         return parentPostID;
     }
 
+    //Creates the comment inside the announcements of the Forum.
+    //Requires:
+    //----parentPostID: Describes the Announcement where the comment should be linked to
+    //----commentData: The Json-Template to create a comment
     createAnnouncementComment(commentData, cookie, parentPostID){
         let commentTemplate = commentData;
         let urlQuery = "sesskey="+this.session+"&info=mod_forum_add_discussion_post";
@@ -67,6 +86,7 @@ export default class AnnouncementPage {
         return 0;
     }
 
+    //Deletes a created comment, uses Variables of the announcementPage Object.
     deleteComment(cookie) {
         const formdata = {
             "delete": this.commentID,
@@ -85,8 +105,11 @@ export default class AnnouncementPage {
         return 0;
     }
 
-    deleteAnnouncement(announceID, cookie) {
-        const urlDiscussionPost = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/discuss.php?d="+announceID;
+    //Deletes a created announcement, the announcement can be deleted with it's specific postID
+    //Required:
+    //----discussionID: Required to get the actual postID for deletion
+    deleteAnnouncement(discussionID, cookie) {
+        const urlDiscussionPost = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/discuss.php?d="+discussionID;
         const urlAnnounceDelete = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/post.php";
 
         let discussionGetRes = http.get(urlDiscussionPost);
