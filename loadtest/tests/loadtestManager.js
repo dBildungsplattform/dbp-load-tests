@@ -1,18 +1,18 @@
 import { group, sleep } from "k6";
 import { SharedArray } from 'k6/data';
-import LoginPage from "../helper/loginPage.js";
-import CoursePage from "../helper/coursePage.js";
-import MetricHelper from "../helper/metricHelper.js";
-import AnnouncementPage from "../helper/announcementPage.js";
-import * as helperFunctions from "../helper/userHelper.js";
+import LoginPage from "../pages/loginPage.js";
+import CoursePage from "../pages/coursePage.js";
+import MetricHelper from "../lib/metricHelper.js";
+import AnnouncementPage from "../pages/announcementPage.js";
+import * as helperFunctions from "../lib/userHelper.js";
 
 const data = new SharedArray('users', function() {
-    const f = JSON.parse(open('../secrets/managerlogin.json'));
+    const f = JSON.parse(open('../../../../../../secrets/managerlogin.json'));
     return f;
 });
-const announcementData = JSON.parse(open('../data/announcementtemplate.json'));
-const courseData = JSON.parse(open('../data/coursetemplate.json'));
-let optionsPath = '../options/'+ __ENV.OPTIONS_FILE_PATH;
+const announcementData = JSON.parse(open('../data/announcementParameters.json'));
+const courseData = JSON.parse(open('../data/courseParameters.json'));
+let optionsPath = '../config/options/'+ __ENV.OPTIONS_FILE_PATH;
 
 export const options = JSON.parse(open(optionsPath));
 let metricHelper = new MetricHelper();

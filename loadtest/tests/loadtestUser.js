@@ -18,7 +18,7 @@ const setupCourseData = JSON.parse(open('../data/courseParameters.json'));
 let setupAnnouncementData = JSON.parse(open('../data/announcementParameters.json'));
 let commentData = JSON.parse(open('../data/commentParameters.json'));
 
-let optionsPath = '../options/'+ __ENV.OPTIONS_FILE_PATH;
+let optionsPath = '../config/options/'+ __ENV.OPTIONS_FILE_PATH;
 
 export const options = JSON.parse(open(optionsPath));
 
