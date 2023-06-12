@@ -8,7 +8,9 @@ export default class MetricHelper {
         this.successfulCoursePage = new Counter("successful_course_displayed");
         this.failedCoursePage = new Counter("unsuccessful_course_displayed");
         this.successfulCourseCreated = new Counter("successful_course_created");
+        this.successfulCourseDeletion = new Counter("successful_course_deleted");
         this.successfulAnnounceCreated = new Counter("successful_announcement_created");
+        this.successfulAnnounceDeleted = new Counter("successful_announcement_deleted");
         this.successfulAnnouncePage = new Counter("successful_announcement_displayed");
         this.failedAnnouncePage = new Counter("unsuccessful_announcement_displayed");
         this.successfulLogouts = new Counter("successful_logouts");
@@ -28,7 +30,7 @@ export default class MetricHelper {
             "User isn't logged in": (r) =>
                 r.body.includes("Login bei 'Moodle'"),
             });
-            return 0;
+        return 0;
     }
 
     checkLogin(res){
@@ -155,7 +157,9 @@ export default class MetricHelper {
     }
 
     checkAnnouncementDeletion(res){
-        checkStatusCode(res);
+        if(checkStatusCode(res)){
+            this.successfulAnnounceDeleted.add(1);
+        }
         checkResponseDuration(res);
         return 0;
     }
@@ -170,7 +174,9 @@ export default class MetricHelper {
     }
 
     checkCourseDeletion(res){
-        checkStatusCode(res);
+        if(checkStatusCode(res)){
+            this.successfulCourseDeletion.add(1);
+        }
         checkResponseDuration(res);
         return 0;
     }
