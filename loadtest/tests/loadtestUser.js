@@ -49,7 +49,8 @@ export function setup() {
 
     let returnData = {
         courseID: courseID,
-        discussionID: discussionIDs
+        discussionID: discussionIDs,
+        coursePrefix: prefix
     }
     return { idObject: returnData };
 }
@@ -59,6 +60,7 @@ export default function (data) {
     const loginPage = new LoginPage(metricHelper);
     const coursePage = new CoursePage(metricHelper);
     let announcementPage;
+    let courseID = data.idObject.courseID;
     let token;
     let sessKey;
     let cookie;
@@ -90,7 +92,7 @@ export default function (data) {
 
     // +++++++++ Course page +++++++++\\
     group("Course page", function () { 
-        coursePage.viewCourse(data.idObject.courseID, token);
+        coursePage.viewCourse(courseID, token, data.idObject.coursePrefix);
     });
 
 

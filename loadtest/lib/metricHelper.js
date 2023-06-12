@@ -52,11 +52,11 @@ export default class MetricHelper {
         return 0;
     }
 
-    checkCoursePageOpened(res){
+    checkCoursePageOpened(res, prefix){
 
         let courseDisplayed = check(res, {
             "successful entered course": (r) =>
-              r.body.indexOf("User course setup:") !== -1,
+              r.body.indexOf(prefix+" course:") !== -1,
         });
 
         if(courseDisplayed) {
@@ -111,8 +111,8 @@ export default class MetricHelper {
         });
         
         check(res, {
-            "comment present in html after deletion popup": (r) => {
-              (r.body.includes(session));
+            "comment not present in html after deletion popup": (r) => {
+              (r.body.includes(session)===false);
             }
         });
 
@@ -143,9 +143,9 @@ export default class MetricHelper {
 
     checkAnnouncementCreation(res){
         checkResponseDuration(res);
-        /*if(checkStatusCode(res) !== true) {
+        if(checkStatusCode(res) !== true) {
             fail("Announcement creation failed");
-        }*/
+        }
         this.successfulAnnounceCreated.add(1);
         return 0;
     }

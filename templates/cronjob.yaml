@@ -33,7 +33,7 @@ spec:
                     name: vminsert-credentials
                     key: password
               - name: OPTIONS_FILE_PATH
-                value: 30s1u.json
+                value: 60s20u.json
               - name: BRANCH
                 value: clone-test-image
             args:

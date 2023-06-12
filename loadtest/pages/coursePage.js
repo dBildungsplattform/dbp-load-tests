@@ -32,12 +32,13 @@ export default class CoursePage {
     }
 
     //User views the course, can't make use of 'this' Course Creation parameter
-    viewCourse(courseID, token){
+    viewCourse(courseID, token, checkPrefix){
         let payload = {logintoken: token};
         let viewUrl = "https://"+ __ENV.ENVIRONMENT +"/course/view.php?id="+courseID;
+        console.log(viewUrl);
         let courseRes = http.get(viewUrl, payload);
 
-        this.metricHelper.checkCoursePageOpened(courseRes);
+        this.metricHelper.checkCoursePageOpened(courseRes, checkPrefix);
         return 0;
     }
 
