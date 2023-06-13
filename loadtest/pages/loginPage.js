@@ -13,7 +13,7 @@ export default class LoginPage {
 	//Simple check if the Frontpage is accessible
 	getFrontpage() {
 		let res = http.get("https://" + __ENV.ENVIRONMENT + "/");
-		this.metricHelper.checkFrontpage(res);
+		MetricHelper.getInstance().checkFrontpage(res);
 		return 0;
 	}
 
