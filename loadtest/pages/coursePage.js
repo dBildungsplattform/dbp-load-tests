@@ -1,8 +1,7 @@
 //The Course Page is a Object that offers all available functionalities surrounding the Course.
 //The Object will be created once per virtual User
-//Requires:
-//----metricHelper Object to have a singular set of Counters during the whole Test
 import http from "k6/http";
+import MetricHelper from "../lib/metricHelper.js";
 
 export default class CoursePage {
 	constructor() {

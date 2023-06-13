@@ -1,10 +1,9 @@
 //The Logout Process is a Object that offers all available functionalities surrounding the Logout.
 //The Object will be created once per virtual User
 //Requires:
-//----metricHelper Object to have a singular set of Counters during the whole Test
 //----sessKey: The sessionKey to identify the user who gets logged out
 import http from "k6/http";
-import MetricHelper from "../lib/metricHelper";
+import MetricHelper from "../lib/metricHelper.js";
 
 export default class LogoutPage {
 	constructor(sessKey, token) {

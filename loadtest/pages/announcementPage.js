@@ -2,8 +2,8 @@
 //The Object will be created once per virtual User
 //Requires:
 //----Users specific Session Key
-//----metricHelper Object to have a singular set of Counters during the whole Test
 import http from "k6/http";
+import MetricHelper from "../lib/metricHelper.js";
 import { sleep } from "k6";
 
 export default class AnnouncementPage {

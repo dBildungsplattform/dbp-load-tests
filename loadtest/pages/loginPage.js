@@ -1,8 +1,7 @@
 //The Login Page is a Object that offers all available functionalities surrounding the Login.
 //The Object will be created once per virtual User
-//Requires:
-//----metricHelper Object to have a singular set of Counters during the whole Test
 import http from "k6/http";
+import MetricHelper from "../lib/metricHelper.js";
 
 export default class LoginPage {
 	constructor() {
@@ -14,7 +13,6 @@ export default class LoginPage {
 	//Simple check if the Frontpage is accessible
 	getFrontpage() {
 		let res = http.get("https://" + __ENV.ENVIRONMENT + "/");
-
 		this.metricHelper.checkFrontpage(res);
 		return 0;
 	}
@@ -25,9 +23,7 @@ export default class LoginPage {
 	checkAlreadyLoggedIn() {
 		let res = http.get(this.url);
 		this.token = res.html().find("input[name=logintoken]").attr("value");
-
 		MetricHelper.getInstance().checkCurrentLoginStatus(res);
-
 		return this.token;
 	}
 
@@ -45,13 +41,9 @@ export default class LoginPage {
 		};
 
 		let res = http.post(this.url, payload);
-
 		let cookie = this.jar.cookiesForURL(res.url);
-
 		let sessKey = res.html().find('input[name="sesskey"]').toArray()[0].attr("value");
-
 		MetricHelper.getInstance().checkLogin(res);
-
 		return { cookie: cookie, session: sessKey };
 	}
 }
