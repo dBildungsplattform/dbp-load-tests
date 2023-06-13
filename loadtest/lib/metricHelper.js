@@ -22,6 +22,13 @@ export default class MetricHelper {
         this.commentsDeleted = new Counter("Comments deleted");
     }
 
+    static getInstance() {
+        if (!MetricHelper.instance) {
+            MetricHelper.instance = new MetricHelper();
+        }
+        return MetricHelper.instance;
+    }
+
     checkFrontpage(res){
         checkStatusCode(res);
         checkResponseDuration(res);

@@ -4,6 +4,7 @@
 //----metricHelper Object to have a singular set of Counters during the whole Test
 //----sessKey: The sessionKey to identify the user who gets logged out
 import http from "k6/http";
+import MetricHelper from "../lib/metricHelper";
 
 export default class LogoutPage {
     constructor(sessKey, token, metricHelper){
@@ -27,7 +28,7 @@ export default class LogoutPage {
         let payload = {logintoken: this.token};
         const logoutVerifyUrl = "https://"+ __ENV.ENVIRONMENT +"/mod/forum/discuss.php?d="+discussionID;
         let verifyRes = http.get(logoutVerifyUrl, payload);
-        this.metricHelper.verifyLogout(verifyRes);
+        MetricHelper.getInstance().verifyLogout(verifyRes);
         return 0;
     }
 }
