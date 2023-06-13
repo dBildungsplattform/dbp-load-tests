@@ -5,6 +5,7 @@ import LoginPage from "../pages/loginPage.js";
 import LogoutPage from "../pages/logoutPage.js";
 import CoursePage from "../pages/coursePage.js";
 import AnnouncementPage from "../pages/announcementPage.js";
+import MetricHelper from "../lib/metricHelper.js";
 
 //Access JSON data from files
 const userLoginData = new SharedArray("users", function () {
@@ -16,6 +17,7 @@ const setupLoginData = JSON.parse(open("/secrets/managerlogin.json"));
 const setupCourseData = JSON.parse(open("../data/courseParameters.json"));
 let setupAnnouncementData = JSON.parse(open("../data/announcementParameters.json"));
 let commentData = JSON.parse(open("../data/commentParameters.json"));
+MetricHelper.getInstance();
 
 let optionsPath = "../config/options/" + __ENV.OPTIONS_FILE_PATH;
 
