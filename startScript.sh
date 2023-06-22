@@ -10,11 +10,11 @@ helpFunction()
 }
 
 
-while getopts "o:e:" opt
+while getopts "o:b:" opt
 do
    case "$opt" in
       o ) optionsParameter="$OPTARG" ;; #Which options file to use as Loadtest Parameters
-      e ) envParameter="$OPTARG" ;; # For later use to change the test environment dynamically
+      #e ) envParameter="$OPTARG" ;; # For later use to change the test environment dynamically
       b ) branch="$OPTARG" ;; #To change the branch from where to clone
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
