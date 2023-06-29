@@ -1,9 +1,14 @@
 {
-    "stages": [
-      { "duration": "45s", "target": 30 },
-      { "duration": "230s", "target": 30 },
-      { "duration": "25s", "target": 0 }
-    ],
-    "gracefulRampDown": "100s",
-    "gracefulStop": "60s"
+  "scenarios": {
+    "contacts": {
+      "executor": "ramping-vus",
+      "startVUs": 0,
+      "stages": [
+        { "duration": "45s", "target": 30 },
+        { "duration": "230s", "target": 30 },
+        { "duration": "25s", "target": 0 }
+      ],
+      "gracefulRampDown": "120s"
+  }
+}
 }
