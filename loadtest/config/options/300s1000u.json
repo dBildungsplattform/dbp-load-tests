@@ -1,13 +1,11 @@
 {
   "scenarios": {
-    "contacts": {
       "stages": [
         { "duration": "45s", "target": 1000 },
         { "duration": "230s", "target": 1000 },
-        { "duration": "25s", "target": 0 }
+        { "duration": "100s", "target": 0 }
       ],
       "gracefulRampDown": "100s",
       "gracefulStop": "60s"
     }
-  }
 }
