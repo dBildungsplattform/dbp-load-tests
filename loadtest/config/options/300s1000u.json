@@ -1,5 +1,6 @@
 {
   "scenarios": {
+    "executor": "ramping-vus",
       "stages": [
         { "duration": "45s", "target": 1000 },
         { "duration": "230s", "target": 1000 },
