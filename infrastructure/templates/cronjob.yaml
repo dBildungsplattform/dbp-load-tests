@@ -22,16 +22,16 @@ spec:
             image: {{ $job_options.image }}
             imagePullPolicy: Always
             env:
-              - name: SECRET_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: vminsert-credentials
-                    key: username
-              - name: SECRET_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: vminsert-credentials
-                    key: password
+              # - name: SECRET_USERNAME
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: vminsert-credentials
+              #       key: username
+              # - name: SECRET_PASSWORD
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: vminsert-credentials
+              #       key: password
               - name: OPTIONS_FILE_PATH
                 value: 300s50u.json
               - name: BRANCH
