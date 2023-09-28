@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: loadtest-{{ $job_name }}
+  name: loadtest-moodle-{{ $job_name }}
   namespace: loadtest
 spec:
   schedule: {{ $job_options.schedule }}
@@ -33,7 +33,7 @@ spec:
                     name: vminsert-credentials
                     key: password
               - name: OPTIONS_FILE_PATH
-                value: 30s1u.json
+                value: 300s50u.json
               - name: BRANCH
                 value: clone-test-image
             args:
