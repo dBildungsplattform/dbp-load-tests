@@ -41,6 +41,7 @@ export default class LoginPage {
 		};
 
 		let res = http.post(this.url, payload);
+		console.log(res);
 		let cookie = this.jar.cookiesForURL(res.url);
 		let sessKey = res.html().find('input[name="sesskey"]').toArray()[0].attr("value");
 		MetricHelper.getInstance().checkLogin(res);
