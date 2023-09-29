@@ -1,6 +1,6 @@
 {
     "returnto": 0,
-    "returnurl": "https://infra.moodle-01.prod.dbildungsplattform.de/course/",
+    "returnurl": "https://moodle.loadtest.dbildungscloud.dev/course/",
     "mform_isexpanded_id_descriptionhdr": 1,
     "addcourseformatoptionshere": "",
     "id": "",
