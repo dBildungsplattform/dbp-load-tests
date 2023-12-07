@@ -21,7 +21,7 @@ export default class CoursePage {
 		courseData.sesskey = sessionKey;
 		courseData.fullname = prefix + " course: " + sessionKey;
 		courseData.shortname = prefix + sessionKey;
-		console.dir("Data: " + courseData);
+		console.log("Data: " + courseData);
 		console.log("CreationURL: " + this.creationUrl);
 
 		let courseCreationRes = http.post(this.creationUrl, courseData, {
@@ -32,7 +32,7 @@ export default class CoursePage {
 		});
 
 		let urlString = courseCreationRes.url;
-		console.dir("Creation response:  " + courseCreationRes); //ERROR: creation response is https://moodle.loadtest.dbildungscloud.dev/course/edit.php
+		console.log("Creation response:  " + JSON.stringify(courseCreationRes)); //ERROR: creation response is https://moodle.loadtest.dbildungscloud.dev/course/edit.php
 		this.courseID = parseInt(urlString.match(/\d+$/));
 		this.session = sessionKey;
 		this.cookie = cookie;
