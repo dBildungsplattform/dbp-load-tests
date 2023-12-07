@@ -21,7 +21,8 @@ export default class CoursePage {
 		courseData.sesskey = sessionKey;
 		courseData.fullname = prefix + " course: " + sessionKey;
 		courseData.shortname = prefix + sessionKey;
-		console.log("Session key:" + sessionKey);
+		console.log("Data: " + courseData);
+		console.log("\n cookies: " + cookie.MoodleSession[0] + ",   " + cookie.MOODLEID1_[0]);
 
 		let courseCreationRes = http.post(this.creationUrl, courseData, {
 			cookies: {
@@ -31,6 +32,7 @@ export default class CoursePage {
 		});
 
 		let urlString = courseCreationRes.url;
+		console.log("Creation response:  " + urlString);
 		this.courseID = parseInt(urlString.match(/\d+$/));
 		this.session = sessionKey;
 		this.cookie = cookie;
