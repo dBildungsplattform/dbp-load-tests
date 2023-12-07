@@ -35,7 +35,7 @@ spec:
               - name: OPTIONS_FILE_PATH
                 value: 300s50u.json
               - name: BRANCH
-                value: clone-test-image
+                value: DBP-320-loadtest-debug
             args:
               ['run', '-u', '0',
                          './loadtest/tests/{{ $job_options.scriptPath }}',
