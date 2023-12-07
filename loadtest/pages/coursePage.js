@@ -22,7 +22,7 @@ export default class CoursePage {
 		courseData.fullname = prefix + " course: " + sessionKey;
 		courseData.shortname = prefix + sessionKey;
 		//console.log("Data: " + courseData);
-		console.log("Data: " + creationUrl);
+		console.log("CreationURL: " + this.creationUrl);
 
 		let courseCreationRes = http.post(this.creationUrl, courseData, {
 			cookies: {
