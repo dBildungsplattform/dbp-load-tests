@@ -1,0 +1,14 @@
+[{
+    "index":0,
+    "methodname":"mod_forum_add_discussion_post",
+    "args":{
+        "postid": "",
+        "message":"",
+        "messageformat":0,
+        "subject":"",
+        "options":[
+            {"name":"private","value":false},
+            {"name":"topreferredformat","value":true}
+        ]
+    }
+}]

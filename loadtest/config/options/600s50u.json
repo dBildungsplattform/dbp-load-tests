@@ -1,0 +1,14 @@
+{
+  "scenarios": {
+    "contacts": {
+      "executor": "ramping-vus",
+      "startVUs": 0,
+      "stages": [
+        { "duration": "45s", "target": 50 },
+        { "duration": "530s", "target": 50 },
+        { "duration": "25s", "target": 0 }
+      ],
+      "gracefulRampDown": "120s"
+  }
+}
+}

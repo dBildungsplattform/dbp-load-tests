@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: loadtest-{{ $job_name }}
+  name: loadtest-moodle-{{ $job_name }}
   namespace: loadtest
 spec:
   schedule: {{ $job_options.schedule }}
@@ -22,28 +22,27 @@ spec:
             image: {{ $job_options.image }}
             imagePullPolicy: Always
             env:
-              - name: SECRET_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: vminsert-credentials
-                    key: username
-              - name: SECRET_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: vminsert-credentials
-                    key: password
+              # - name: SECRET_USERNAME
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: vminsert-credentials
+              #       key: username
+              # - name: SECRET_PASSWORD
+              #   valueFrom:
+              #     secretKeyRef:
+              #       name: vminsert-credentials
+              #       key: password
+              - name: OPTIONS_FILE_PATH
+                value: 300s50u.json
+              - name: BRANCH
+                value: clone-test-image
             args:
-              ['run', '-u', '0', '-s', '{{ $job_options.scalingDuration }}:{{ $job_options.loadVUs }}',
-                         '-s', '{{ $job_options.peakDuration }}:{{ $job_options.loadVUs }}',
-                         '-s', '{{ $job_options.scalingDuration }}:0', '/scripts/{{ $job_options.scriptPath }}',
+              ['run', '-u', '0',
+                         './loadtest/tests/{{ $job_options.scriptPath }}',
                          '--tag','NAME={{ $job_options.serviceName }}',
                          '--out', 'experimental-prometheus-rw',
                          '-e', 'ENVIRONMENT={{ $job_options.environment }}']
             volumeMounts:
-            - name: config-scripts
-              mountPath: /scripts
-            - name: config-data
-              mountPath: /data
             - name: secret-volume
               mountPath: /secrets
               readOnly: true
@@ -51,12 +50,6 @@ spec:
             - containerPort: {{ $job_options.port }}
               name: loadtest-pod
           volumes:
-          - name: config-scripts
-            configMap:
-              name: configmap-moodle-loadtest
-          - name: config-data
-            configMap:
-              name: configmap-moodle-data
           - name: secret-volume
             secret:
               secretName: login-secret

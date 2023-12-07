@@ -9,20 +9,29 @@ The defined scenarios in the values consist of different parameters like the use
 
 The produced metrics will be exported with the k6 nativ prometheus remote write exporter.
 
-## Content and structure:
+## Content and Structure:
+The repo is distributed into infrastructure and loadtest code.
 
-### Folder 'js':
-Consists of the k6 testscripts who will be referenced in the values.yaml.
+## Infrastructure Folder
+Contains the Helm Chart to deploy and the Dockerfiles in their respective Folders
 
-### Folder 'templates':
-Content of the Helm Chart to deploy.
+## Loadtest Folder
 
-### Folder 'data':
-All json files who are used as payload will be stored here.
+### tests:
+Consists of the k6 testscripts.
 
-### yalues.yaml
-Parameters for dynamic reusability of the loadtest.
-Those parameters will be used in 'templates/cronjob.yaml'
+### config:
+Contains different config files like environment or options.
+The options will be dynamically selectable to set users and runtime for the tests.
+
+### data:
+The Json templates for HTTP-requests will be stored here.
+
+### lib:
+Containes different helper classes to use in other code.
+
+### pages:
+Files who cover different functionalities in Moodle.
 
 ## Versions:
 

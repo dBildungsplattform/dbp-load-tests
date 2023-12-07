@@ -33,5 +33,5 @@ jobs:
       registry: ghcr.io
       image: dbildungsplattform/${{ needs.pre_build.outputs.tagName }}
       tag: ${{ needs.pre_build.outputs.versionName }}
-      context: ./${{ needs.pre_build.outputs.tagName }}/
+      context: ./infrastructure/${{ needs.pre_build.outputs.tagName }}/
   
