@@ -23,7 +23,6 @@ export default class LoginPage {
 	checkAlreadyLoggedIn() {
 		let res = http.get(this.url);
 		this.token = res.html().find("input[name=logintoken]").attr("value");
-		console.log("Login token: " + this.token);
 		MetricHelper.getInstance().checkCurrentLoginStatus(res);
 		return this.token;
 	}
@@ -40,11 +39,13 @@ export default class LoginPage {
 			redir: "1",
 			logintoken: this.token,
 		};
+		console.log("Login payload: " + JSON.stringify(payload));
 
 		let res = http.post(this.url, payload);
-		console.log(res);
+		//console.log(res);
 		let cookie = this.jar.cookiesForURL(res.url);
 		let sessKey = res.html().find('input[name="sesskey"]').toArray()[0].attr("value");
+		console.log("Session key: " + sessKey);
 		MetricHelper.getInstance().checkLogin(res);
 		return { cookie: cookie, session: sessKey };
 	}
