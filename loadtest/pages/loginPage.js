@@ -23,6 +23,7 @@ export default class LoginPage {
 	checkAlreadyLoggedIn() {
 		let res = http.get(this.url);
 		this.token = res.html().find("input[name=logintoken]").attr("value");
+		console.log("Login token: " + this.token);
 		MetricHelper.getInstance().checkCurrentLoginStatus(res);
 		return this.token;
 	}
