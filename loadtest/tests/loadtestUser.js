@@ -31,7 +31,7 @@ export function setup() {
 
 	//User Login
 	let setupLogin = loginPage.login(setupLoginData[0]);
-	console.log(JSON.stringify("Login response:" + setupLogin));
+	console.log("Login response:" + JSON.stringify(setupLogin));
 	let setupSessKey = setupLogin.session;
 	let cookie = setupLogin.cookie;
 
