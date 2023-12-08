@@ -5,7 +5,7 @@ import MetricHelper from "../lib/metricHelper.js";
 
 export default class LoginPage {
 	constructor() {
-		this.url = "https://" + __ENV.ENVIRONMENT + "/login/index.php";//?lang=de
+		this.url = "https://" + __ENV.ENVIRONMENT + "/login/index.php?lang=de";
 		this.jar = http.cookieJar();
 		this.token = "";
 	}
