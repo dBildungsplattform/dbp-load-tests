@@ -21,7 +21,7 @@ export default class CoursePage {
 		courseData.sesskey = sessionKey;
 		courseData.fullname = prefix + " course: " + sessionKey;
 		courseData.shortname = prefix + sessionKey;
-		console.log("Data: " + courseData);
+		console.log("Data: " + JSON.stringify(courseData));
 		console.log("CreationURL: " + this.creationUrl);
 
 		let courseCreationRes = http.post(this.creationUrl, courseData, {
@@ -33,7 +33,7 @@ export default class CoursePage {
 
 		let urlString = courseCreationRes.url;
 		console.log("Creation response:  " + JSON.stringify(courseCreationRes)); //ERROR: creation response is https://moodle.loadtest.dbildungscloud.dev/course/edit.php
-		this.courseID = parseInt(urlString.match(/\d+$/));
+		this.courseID = parseInt(urlString.match(/\d+$/));  //New error: 404 not found
 		this.session = sessionKey;
 		this.cookie = cookie;
 
