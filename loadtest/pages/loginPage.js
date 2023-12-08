@@ -5,7 +5,7 @@ import MetricHelper from "../lib/metricHelper.js";
 
 export default class LoginPage {
 	constructor() {
-		this.url = "https://" + __ENV.ENVIRONMENT + "/login/index.php?lang=de";
+		this.url = "https://" + __ENV.ENVIRONMENT + "/login/index.php";//?lang=de
 		this.jar = http.cookieJar();
 		this.token = "";
 	}
@@ -40,9 +40,9 @@ export default class LoginPage {
 			logintoken: this.token,
 		};
 		console.log("Login payload: " + JSON.stringify(payload));
-
+		console.log(this.url);
 		let res = http.post(this.url, payload);
-		//console.log(res);
+		console.log(JSON.stringify(res));
 		let cookie = this.jar.cookiesForURL(res.url);
 		let sessKey = res.html().find('input[name="sesskey"]').toArray()[0].attr("value");
 		console.log("Session key: " + sessKey);
