@@ -20,7 +20,7 @@ export default class CoursePage {
 	createNewCourse(sessionKey, courseData, cookie, prefix) {
 		courseData.sesskey = sessionKey;
 		courseData.fullname = prefix + " course: " + sessionKey;
-		courseData.shortname = prefix + sessionKey;
+		courseData.shortname = sessionKey;
 		console.log("Data: " + JSON.stringify(courseData));
 		console.log("CreationURL: " + this.creationUrl);
 
