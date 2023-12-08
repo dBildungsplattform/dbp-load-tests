@@ -36,7 +36,7 @@ export default class LoginPage {
 		let payload = {
 			username: loginData.username,
 			password: loginData.password,
-			redir: "1",
+			anchor: "",
 			logintoken: this.token,
 		};
 		console.log("Login payload: " + JSON.stringify(payload));
