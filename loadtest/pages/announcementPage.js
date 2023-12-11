@@ -80,7 +80,7 @@ export default class AnnouncementPage {
 				MOODLEID1_: cookie.MOODLEID1_[0],
 			},
 		});
-		this.commentID = JSON.parse(commentRes.body)[0].data.postid; //TODO Cant read post id
+		this.commentID = JSON.parse(commentRes.body)[0].data.postid;
 
 		MetricHelper.getInstance().checkCommentCreation(commentRes, this.session);
 
