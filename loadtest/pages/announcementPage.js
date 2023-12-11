@@ -21,7 +21,9 @@ export default class AnnouncementPage {
 	createAnnouncement(announcementData, courseID, cookie, amount) {
 		announcementData.sesskey = this.session;
 		announcementData.course = courseID;
-		let forumID = courseID - 1;
+		let getForumIDResponse = http.get("https://moodle.loadtest.dbildungscloud.dev/course/view.php?id="+courseID);
+		let forumID = getForumIDResponse.html().find("li[class~=forum]").attr("data-id");//courseID - 1;
+		console.log("Forum ID: "+ forumID);
 		announcementData.forum = forumID;
 
 		const discussionIDs = [];

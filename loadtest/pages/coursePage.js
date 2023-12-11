@@ -21,7 +21,6 @@ export default class CoursePage {
 		courseData.sesskey = sessionKey;
 		courseData.fullname = prefix + " course: " + sessionKey;
 		courseData.shortname = sessionKey;
-		console.log("Data: " + JSON.stringify(courseData));
 
 		let courseCreationRes = http.post(this.creationUrl, courseData, {
 			cookies: {
@@ -31,7 +30,7 @@ export default class CoursePage {
 		});
 
 		let urlString = courseCreationRes.url;
-		console.log("Creation response:  " + JSON.stringify(courseCreationRes));
+		//console.log("Creation response:  " + JSON.stringify(courseCreationRes));
 		this.courseID = parseInt(urlString.match(/\d+$/));
 		this.session = sessionKey;
 		this.cookie = cookie;
