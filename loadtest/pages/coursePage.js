@@ -22,7 +22,6 @@ export default class CoursePage {
 		courseData.fullname = prefix + " course: " + sessionKey;
 		courseData.shortname = sessionKey;
 		console.log("Data: " + JSON.stringify(courseData));
-		console.log("CreationURL: " + this.creationUrl);
 
 		let courseCreationRes = http.post(this.creationUrl, courseData, {
 			cookies: {

@@ -39,13 +39,9 @@ export default class LoginPage {
 			anchor: "",
 			logintoken: this.token,
 		};
-		console.log("Login payload: " + JSON.stringify(payload));
-		console.log(this.url);
 		let res = http.post(this.url, payload);
-		console.log(JSON.stringify(res));
 		let cookie = this.jar.cookiesForURL(res.url);
 		let sessKey = res.html().find('input[name="sesskey"]').toArray()[0].attr("value");
-		console.log("Session key: " + sessKey);
 		MetricHelper.getInstance().checkLogin(res);
 		return { cookie: cookie, session: sessKey };
 	}
