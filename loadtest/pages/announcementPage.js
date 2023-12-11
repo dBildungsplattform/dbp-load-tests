@@ -22,7 +22,7 @@ export default class AnnouncementPage {
 		announcementData.sesskey = this.session;
 		announcementData.course = courseID;
 		let getForumIDResponse = http.get("https://moodle.loadtest.dbildungscloud.dev/course/view.php?id="+courseID);
-		let forumID = getForumIDResponse.html().find("li[class~=forum]").attr("data-id");//courseID - 1;
+		let forumID = getForumIDResponse.html().find("li[class~=forum]").attr("data-id");
 		console.log("Forum ID: "+ forumID);
 		announcementData.forum = forumID;
 
@@ -80,7 +80,7 @@ export default class AnnouncementPage {
 				MOODLEID1_: cookie.MOODLEID1_[0],
 			},
 		});
-		this.commentID = JSON.parse(commentRes.body)[0].data.postid; //Cant read post id
+		this.commentID = JSON.parse(commentRes.body)[0].data.postid; //TODO Cant read post id
 
 		MetricHelper.getInstance().checkCommentCreation(commentRes, this.session);
 
