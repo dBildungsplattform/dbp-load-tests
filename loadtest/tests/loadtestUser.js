@@ -27,12 +27,10 @@ export const options = JSON.parse(open(optionsPath));
 export function setup() {
 	const loginPage = new LoginPage();
 	let token = loginPage.checkAlreadyLoggedIn();
-	console.log("Login check: " + token);
 	const coursePage = new CoursePage();
 
 	//User Login
 	let setupLogin = loginPage.login(setupLoginData[0]);
-	//console.log("Login response:" + JSON.stringify(setupLogin));
 	let setupSessKey = setupLogin.session;
 	let cookie = setupLogin.cookie;
 

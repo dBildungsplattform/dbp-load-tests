@@ -78,8 +78,6 @@ export default class AnnouncementPage {
 				MOODLEID1_: cookie.MOODLEID1_[0],
 			},
 		});
-		console.log("Normal comment response: " + commentRes.body);
-		console.log("Parsed comment res body: " + JSON.parse(commentRes.body)[0]);
 		this.commentID = JSON.parse(commentRes.body)[0].data.postid; //Cant read post id
 
 		MetricHelper.getInstance().checkCommentCreation(commentRes, this.session);
