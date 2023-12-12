@@ -23,7 +23,6 @@ export default class AnnouncementPage {
 		announcementData.course = courseID;
 		let getForumIDResponse = http.get("https://moodle.loadtest.dbildungscloud.dev/course/view.php?id="+courseID);
 		let forumID = getForumIDResponse.html().find("li[class~=forum]").attr("data-id");
-		console.log("Forum ID: "+ forumID);
 		announcementData.forum = forumID;
 
 		const discussionIDs = [];
