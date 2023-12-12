@@ -48,7 +48,7 @@
     "showcompletionconditions": 1,
     "groupmode": 0,
     "groupmodeforce": 0,
-    "defaultgroupqingid": 0,
+    "defaultgroupingid": 0,
     "role1": "", "role2": "", "role3": "", "role4": "", "role5": "", "role6": "", "role7": "", "role8":"",
     "tags": "_qf__force_multiselect_submission",
     "saveanddisplay": "Speichern und anzeigen"
