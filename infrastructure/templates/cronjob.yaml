@@ -22,25 +22,15 @@ spec:
             image: {{ $job_options.image }}
             imagePullPolicy: Always
             env:
-              # - name: SECRET_USERNAME
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: vminsert-credentials
-              #       key: username
-              # - name: SECRET_PASSWORD
-              #   valueFrom:
-              #     secretKeyRef:
-              #       name: vminsert-credentials
-              #       key: password
               - name: OPTIONS_FILE_PATH
                 value: 300s50u.json
               - name: BRANCH
-                value: clone-test-image
+                value: main
             args:
               ['run', '-u', '0',
                          './loadtest/tests/{{ $job_options.scriptPath }}',
                          '--tag','NAME={{ $job_options.serviceName }}',
-                         '--out', 'experimental-prometheus-rw',
+                         #'--out', 'experimental-prometheus-rw',
                          '-e', 'ENVIRONMENT={{ $job_options.environment }}']
             volumeMounts:
             - name: secret-volume

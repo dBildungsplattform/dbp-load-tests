@@ -36,12 +36,10 @@ export default class LoginPage {
 		let payload = {
 			username: loginData.username,
 			password: loginData.password,
-			redir: "1",
+			anchor: "",
 			logintoken: this.token,
 		};
-
 		let res = http.post(this.url, payload);
-		console.log(res);
 		let cookie = this.jar.cookiesForURL(res.url);
 		let sessKey = res.html().find('input[name="sesskey"]').toArray()[0].attr("value");
 		MetricHelper.getInstance().checkLogin(res);

@@ -47,7 +47,7 @@ export default class MetricHelper {
 
         let checkLoginSuccess = check(res, {
             "is logged in welcome header present": (r) =>
-              r.body.includes("Willkommen zurück, "),
+              r.body.includes("Hallo, "),
         });
       
         let checkLoginFailure =  (res) => res.body.includes("Ungültige Anmeldedaten. Versuchen Sie es noch einmal!");

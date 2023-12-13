@@ -20,7 +20,7 @@ export default class CoursePage {
 	createNewCourse(sessionKey, courseData, cookie, prefix) {
 		courseData.sesskey = sessionKey;
 		courseData.fullname = prefix + " course: " + sessionKey;
-		courseData.shortname = prefix + sessionKey;
+		courseData.shortname = sessionKey;
 
 		let courseCreationRes = http.post(this.creationUrl, courseData, {
 			cookies: {
@@ -69,7 +69,6 @@ export default class CoursePage {
 			delete: courseStringID,
 			sesskey: this.session,
 		};
-
 		let courseDeletionRes = http.post(courseDeleteSubmitUrl, payload, {
 			cookies: {
 				MoodleSession: this.cookie.MoodleSession[0],

@@ -5,18 +5,18 @@ cronjobs:
     port: 5656
     serviceName: manager-scenario
     image: ghcr.io/dbildungsplattform/k6-loadtest:latest
-    environment: moodle.test.dbildungscloud.org
+    environment: moodle.loadtest.dbildungscloud.dev
   user-scenario:
     scriptPath: loadtestUser.js
     schedule: 0 8 * * *
     port: 5656
     serviceName: user-scenario
     image: ghcr.io/dbildungsplattform/k6-loadtest:latest
-    environment: moodle.test.dbildungscloud.org
+    environment: moodle.loadtest.dbildungscloud.dev
   browser-scenario:
     scriptPath: browserLoadtest.js
     schedule: 0 8 * * *
     port: 5656
     serviceName: browser-scenario
     image: ghcr.io/dbildungsplattform/k6-browser-loadtest:latest
-    environment: moodle.test.dbildungscloud.org
+    environment: moodle.loadtest.dbildungscloud.dev
