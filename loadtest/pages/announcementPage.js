@@ -23,13 +23,13 @@ export default class AnnouncementPage {
 		announcementData.course = courseID;
 		let getForumIDResponse = http.get("https://moodle.loadtest.dbildungscloud.dev/course/view.php?id="+courseID);
 		let forumID = getForumIDResponse.html().find("li[class~=forum]").attr("data-id");
-		console.log("CourseID = "+ courseID + ", ForumID = " + forumID); //DEBUG
+		//DEBUG console.log("CourseID = "+ courseID + ", ForumID = " + forumID); 
 		announcementData.forum = forumID-1;
 
 		const discussionIDs = [];
 		for (let i = 0; i < amount; i++) {
 			announcementData.subject = "Loadtest Announcement for " + this.session + "-" + i;
-			console.log(announcementData);
+			//DEBUG console.log(announcementData);
 			let announceCreationRes = http.post(this.announcementUrl, announcementData, {
 				cookies: {
 					MoodleSession: cookie.MoodleSession[0],
