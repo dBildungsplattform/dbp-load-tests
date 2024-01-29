@@ -22,7 +22,7 @@ export default class AnnouncementPage {
 		announcementData.sesskey = this.session;
 		announcementData.course = courseID;
 		let getForumIDResponse = http.get("https://moodle.loadtest.dbildungscloud.dev/course/view.php?id="+courseID);
-		let forumID = getForumIDResponse.html().find("li[class=forum]").attr("data-id");
+		let forumID = getForumIDResponse.html().find("li[class~=forum]").attr("data-id");
 		console.log("CourseID = "+ courseID + ", ForumID = " + forumID);
 		announcementData.forum = forumID;
 
