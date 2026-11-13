@@ -13,14 +13,14 @@ jobs:
       versionName: ${{ steps.versionName.outputs.tag }}
     steps:
       - name: Filter Tag name
-        uses: olegtarasov/get-tag@v2.1
+        uses: olegtarasov/get-tag@53af8e1e538a0ffab949cdde3e332d8e58e8630f # v2.1
         id: tagName
         with:
           tagRegex: "(.+?(?=-[0-9]))"
           tagRegexGroup: 1
 
       - name: Filter Version name
-        uses: olegtarasov/get-tag@v2.1
+        uses: olegtarasov/get-tag@53af8e1e538a0ffab949cdde3e332d8e58e8630f # v2.1
         id: versionName
         with:
           tagRegex: "${{ steps.tagName.outputs.tag }}-(.*)"
@@ -28,7 +28,7 @@ jobs:
 
   build_and_push:
     needs: pre_build
-    uses: hpi-schul-cloud/infra-tools/.github/workflows/build-and-push.yaml@master
+    uses: hpi-schul-cloud/infra-tools/.github/workflows/build-and-push.yaml@9427df6b6015b8f6dc3b0c1142ffe35dfd4b1e0f # main
     with:
       registry: ghcr.io
       image: dbildungsplattform/${{ needs.pre_build.outputs.tagName }}
